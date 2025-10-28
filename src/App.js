@@ -9,6 +9,9 @@ import { getAudioContext, webaudioOutput, registerSynthSounds } from '@strudel/w
 import { registerSoundfonts } from '@strudel/soundfonts';
 import { stranger_tune } from './tunes';
 import console_monkey_patch, { getD3Data } from './console-monkey-patch';
+import AudioControls from './components/AudioControls';
+import EffectControls from './components/EffectControls';
+import PatternEditor from './components/PatternEditor';
 
 let globalEditor = null;
 
@@ -16,29 +19,21 @@ const handleD3Data = (event) => {
     console.log(event.detail);
 };
 
-export function SetupButtons() {
-
-    document.getElementById('play').addEventListener('click', () => globalEditor.evaluate());
-    document.getElementById('stop').addEventListener('click', () => globalEditor.stop());
-    document.getElementById('process').addEventListener('click', () => {
-        Proc()
-    }
-    )
-    document.getElementById('process_play').addEventListener('click', () => {
-        if (globalEditor != null) {
-            Proc()
-            globalEditor.evaluate()
-        }
-    }
-    )
+export function playAudio() {
+    globalEditor.evaluate();
 }
 
+export function stopAudio() {
+    globalEditor.stop();
+}
 
+export function processAudio() {
+    Proc();
+}
 
-export function ProcAndPlay() {
-    if (globalEditor != null && globalEditor.repl.state.started == true) {
-        console.log(globalEditor)
-        Proc()
+export function procPlayAudio() {
+    if (globalEditor != null) {
+        Proc();
         globalEditor.evaluate();
     }
 }
@@ -99,7 +94,6 @@ useEffect(() => {
             });
             
         document.getElementById('proc').value = stranger_tune
-        SetupButtons()
         Proc()
     }
 
@@ -118,34 +112,15 @@ return (
                         <textarea className="form-control" rows="15" id="proc" ></textarea>
                     </div>
                     <div className="col-md-4">
-
-                        <nav>
-                            <button id="process" className="btn btn-outline-primary">Preprocess</button>
-                            <button id="process_play" className="btn btn-outline-primary">Proc & Play</button>
-                            <br />
-                            <button id="play" className="btn btn-outline-primary">Play</button>
-                            <button id="stop" className="btn btn-outline-primary">Stop</button>
-                        </nav>
+                        <AudioControls />
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-md-8" style={{ maxHeight: '50vh', overflowY: 'auto' }}>
-                        <div id="editor" />
-                        <div id="output" />
+                    <div className="col-md-8">
+                        <PatternEditor />
                     </div>
                     <div className="col-md-4">
-                        <div className="form-check">
-                            <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" onChange={ProcAndPlay} defaultChecked />
-                            <label className="form-check-label" htmlFor="flexRadioDefault1">
-                                p1: ON
-                            </label>
-                        </div>
-                        <div className="form-check">
-                            <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" onChange={ProcAndPlay} />
-                            <label className="form-check-label" htmlFor="flexRadioDefault2">
-                                p1: HUSH
-                            </label>
-                        </div>
+                        <EffectControls strudel={ globalEditor } />
                     </div>
                 </div>
             </div>
