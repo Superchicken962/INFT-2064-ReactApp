@@ -1,24 +1,16 @@
-import { Proc } from "../App";
-
-function ProcAndPlay(strudel) {
-    if (strudel != null && strudel.repl.state.started === true) {
-        console.log(strudel)
-        Proc()
-        strudel.evaluate();
-    }
-}
+import { procPlayAudio } from "../App";
 
 const EffectControls = ({ strudel }) => {
     return (
         <>
             <div className="form-check">
-                <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" onChange={() => {ProcAndPlay(strudel)}} defaultChecked />
+                <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" onChange={procPlayAudio} defaultChecked />
                 <label className="form-check-label" htmlFor="flexRadioDefault1">
                     p1: ON
                 </label>
             </div>
             <div className="form-check">
-                <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" onChange={() => {ProcAndPlay(strudel)}} />
+                <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" onChange={procPlayAudio} />
                 <label className="form-check-label" htmlFor="flexRadioDefault2">
                     p1: HUSH
                 </label>
