@@ -11,6 +11,7 @@ import { stranger_tune } from './tunes';
 import console_monkey_patch, { getD3Data } from './console-monkey-patch';
 import AudioControls from './components/AudioControls';
 import EffectControls from './components/EffectControls';
+import PatternEditor from './components/PatternEditor';
 
 let globalEditor = null;
 
@@ -18,21 +19,23 @@ const handleD3Data = (event) => {
     console.log(event.detail);
 };
 
-export function SetupButtons() {
+export function playAudio() {
+    globalEditor.evaluate();
+}
 
-    document.getElementById('play').addEventListener('click', () => globalEditor.evaluate());
-    document.getElementById('stop').addEventListener('click', () => globalEditor.stop());
-    document.getElementById('process').addEventListener('click', () => {
-        Proc()
+export function stopAudio() {
+    globalEditor.stop();
+}
+
+export function processAudio() {
+    Proc();
+}
+
+export function procPlayAudio() {
+    if (globalEditor != null) {
+        Proc();
+        globalEditor.evaluate();
     }
-    )
-    document.getElementById('process_play').addEventListener('click', () => {
-        if (globalEditor != null) {
-            Proc()
-            globalEditor.evaluate()
-        }
-    }
-    )
 }
 
 export function Proc() {
@@ -91,7 +94,6 @@ useEffect(() => {
             });
             
         document.getElementById('proc').value = stranger_tune
-        SetupButtons()
         Proc()
     }
 
@@ -114,9 +116,8 @@ return (
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-md-8" style={{ maxHeight: '50vh', overflowY: 'auto' }}>
-                        <div id="editor" />
-                        <div id="output" />
+                    <div className="col-md-8">
+                        <PatternEditor />
                     </div>
                     <div className="col-md-4">
                         <EffectControls strudel={ globalEditor } />

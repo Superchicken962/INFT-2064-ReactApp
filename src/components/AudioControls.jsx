@@ -1,12 +1,14 @@
+import { playAudio, processAudio, procPlayAudio, stopAudio } from "../App";
+
 const AudioControls = () => {
     return (
         <>
             <nav>
-                <button id="process" className="btn btn-outline-primary">Preprocess</button>
-                <button id="process_play" className="btn btn-outline-primary">Proc & Play</button>
+                <button id="process" className="btn btn-outline-primary" onClick={processAudio}>Preprocess</button>
+                <button id="process_play" className="btn btn-outline-primary" onClick={procPlayAudio}>Proc & Play</button>
                 <br />
-                <button id="play" className="btn btn-outline-primary">Play</button>
-                <button id="stop" className="btn btn-outline-primary">Stop</button>
+                <button id="play" className="btn btn-outline-primary" onClick={playAudio}>Play</button>
+                <button id="stop" className="btn btn-outline-primary" onClick={stopAudio}>Stop</button>
             </nav>
         </>
     );
