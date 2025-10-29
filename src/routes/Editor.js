@@ -61,7 +61,7 @@ const Editor = () => {
 
     return (
         <>
-            <h2>Strudel Demo</h2>
+            <h2>Strudel Editor</h2>
             <main>
 
                 <div className="container-fluid">
