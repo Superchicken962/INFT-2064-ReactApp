@@ -11,3 +11,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.patternEditor .editor {
+    height: 50vh;
+    overflow-y: auto;
+    background-color: red !important;
+}

@@ -4,23 +4,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.min.js';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Editor from './routes/Editor';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-        {/* <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<App />}>
-                    <Route path="/test" element={<Editor />} />
-                    <Route path="" element={<App />} />
-                    <Route path="*" element={<App />} />
-                </Route>
-            </Routes>
-
-        </BrowserRouter> */}
-
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<App />}>

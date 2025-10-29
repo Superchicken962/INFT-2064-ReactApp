@@ -1,10 +1,10 @@
 import './App.css';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet } from 'react-router-dom';
 
 export default function StrudelDemo() {
-
+    
     return (
-        <div className="App container">
+        <div>
             <nav className="navbar navbar-expand lg navbar-light bg-light mb-3">
                 <div className="container-fluid">
                     <Link className="navbar-brand" to="/">MusicMixer</Link>
@@ -15,8 +15,9 @@ export default function StrudelDemo() {
 
                     <div className="collapse navbar-collapse" id="navbarCollapse">
                         <div className="navbar-nav">
-                            <Link className="nav-link active" to="/">Home</Link>
-                            <Link className="nav-link" to="/editor">Editor</Link>
+                            {/* Use NavLink so that the active page link is given the 'active' className. */}
+                            <NavLink className="nav-link" to="/">Home</NavLink>
+                            <NavLink className="nav-link" to="/editor">Editor</NavLink>
                         </div>
                     </div>
                 </div>
