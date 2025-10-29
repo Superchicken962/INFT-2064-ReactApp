@@ -1,4 +1,4 @@
-import { playAudio, processAudio, procPlayAudio, stopAudio } from "../App";
+import { playAudio, processAudio, procPlayAudio, stopAudio } from "../utils/audio";
 
 const AudioControls = () => {
     return (

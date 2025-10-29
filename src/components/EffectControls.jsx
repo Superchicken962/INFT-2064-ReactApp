@@ -1,4 +1,4 @@
-import { procPlayAudio } from "../App";
+import { procPlayAudio } from "../utils/audio";
 
 const EffectControls = ({ strudel }) => {
     return (
