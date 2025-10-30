@@ -1,8 +1,13 @@
+import { StrudelMirror } from "@strudel/codemirror";
+
 let globalEditor = null;
 
 export function setGlobalEditor(gEditor) {
     globalEditor = gEditor;
 }
+/**
+ * @returns { StrudelMirror }
+ */
 export function getGlobalEditor() {
     return globalEditor;
 }
