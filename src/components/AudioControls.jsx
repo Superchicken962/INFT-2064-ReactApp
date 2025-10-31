@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { playAudio, processAudio, procPlayAudio, stopAudio } from "../utils/audio";
+import { playAudio, processAudio, procPlayAudio, setAudioVolume, stopAudio } from "../utils/audio";
 
 const AudioControls = ({ volumeKey }) => {
     const [volume, setVolume] = useState(50);
 
     const changeVolume = (e) => {
         setVolume(e.target.value);
+        setAudioVolume(0.2);
     }
 
     return (
