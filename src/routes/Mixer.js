@@ -23,8 +23,8 @@ const Mixer = () => {
                     <div className="row mb-3">
                         <div className="col-md-12">
                             <div className="mixersContainer">
-                                <MixerSlider saveKey={"one"}></MixerSlider>
-                                <MixerSlider saveKey={"two"}></MixerSlider>
+                                <MixerSlider saveKey={"one"}>Mixer 1</MixerSlider>
+                                <MixerSlider saveKey={"two"}>Mixer 2</MixerSlider>
                             </div>
                         </div>
                     </div>

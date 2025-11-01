@@ -21,6 +21,7 @@ code {
 .mixerSlider {
   display: inline-block;
   transform: rotate(90deg) translate(50px, 0);
+  position: relative;
 }
 .mixerSlider input::-webkit-slider-runnable-track {
   background-color: rgb(35,35,35);
@@ -32,6 +33,20 @@ code {
   padding: 32px 8px;
   position: relative;
   bottom: 26px;
+}
+/* Positioning is a bit fucky because of the input rotation */
+/* 'right' is essentially 'bottom' */
+.mixerSlider label {
+  display: block;
+  margin: auto;
+  position: absolute;
+  width: fit-content;
+  transform: rotate(270deg);
+  right: -40px;
+  bottom: 0;
+  top: 0;
+  color: white;
+  pointer-events: none;
 }
 
 svg.audioVisualiser {

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const MixerSlider = ({ saveKey }) => {
+const MixerSlider = ({ saveKey, children }) => {
     // Prepend 'MixerSlider' to this so that it does not conflict with other components.
     const KEY_NAME = `MixerSlider.${saveKey}`;
     const [value, setValue] = useState(localStorage.getItem(KEY_NAME) ?? 0.5);
@@ -17,6 +17,7 @@ const MixerSlider = ({ saveKey }) => {
         <>
             <div className="mixerSlider">
                 <input type="range" className="form-range" value={ value } onChange={ changeValue } max="1" min="0" step="0.01" />
+                <label>{ children }</label>
             </div>
         </>
     );
