@@ -34,11 +34,11 @@ const Editor = () => {
                 const drawContext = canvas.getContext('2d');
                 const drawTime = [-2, 2]; // time window of drawn haps
 
-                const audioCtx = getAudioContext();
+                // const audioCtx = getAudioContext();
 
                 // Create new node for managing global volume/gain and add to editor object.
-                const volNode = new GainNode(audioCtx, { gain: 0.2 });
-                volNode.connect(audioCtx.destination);
+                // const volNode = new GainNode(audioCtx, { gain: 0.2 });
+                // volNode.connect(audioCtx.destination);
 
                 setGlobalEditor(new StrudelMirror({
                     defaultOutput: webaudioOutput,
@@ -75,7 +75,7 @@ const Editor = () => {
 
                 <div className="container-fluid">
                     <div className="row mb-3">
-                        <div className="col-md-8">
+                        <div className="col-md-12">
                             <ul className="nav nav-tabs mb-2" id="myTab" role="tablist">
                                 <li className="nav-item" role="presentation">
                                     <button className="nav-link active" id="preprocess-text-input-lbl" data-bs-toggle="tab" data-bs-target="#preprocess-text-input" type="button" role="tab" aria-controls="preprocess-text-input" aria-selected="true">Edit</button>
@@ -97,10 +97,10 @@ const Editor = () => {
                     </div>
 
                     <div className="row">
-                        <div className="col-md-4">
+                        <div className="col-md-6">
                             <AudioControls />
                         </div>
-                        <div className="col-md-4">
+                        <div className="col-md-6">
                             <EffectControls strudel={ getGlobalEditor() } />
                         </div>
                     </div>

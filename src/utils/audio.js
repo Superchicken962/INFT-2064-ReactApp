@@ -53,13 +53,17 @@ export function Proc() {
 }
 
 export function setAudioVolume(volume) {
-    // if (!globalEditor) return;
-    // console.log(globalEditor);
+    if (!globalEditor) return;
 
     // const code = globalEditor.code;
-    // const comment = "// Volume set programmatically";
-    
-    // if (!code.includes(comment)) {
-    //     globalEditor.appendCode(`\n.gain(0.2) ${comment}`);
-    // }
+    const procText = document.querySelector("#proc");
+    const text = procText.value;
+
+    const comment = "// Volume set programmatically";
+
+    if (!text.includes(comment)) {
+        procText.value += `\n.gain(${volume}) ${comment}`;
+    }
+
+    Proc();
 }
