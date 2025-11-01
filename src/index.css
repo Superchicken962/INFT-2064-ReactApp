@@ -12,8 +12,34 @@ code {
     monospace;
 }
 
-.patternEditor .editor {
-    height: 50vh;
-    overflow-y: auto;
-    background-color: red !important;
+.mixersContainer {
+  display: block;
+  background-color: rgb(48, 48, 48);
+  height: 150px;
+}
+/* Remember that since the mixer is rotated, the height becomes the width and width becomes height. */
+.mixerSlider {
+  display: inline-block;
+  transform: rotate(90deg) translate(50px, 0);
+}
+.mixerSlider input {
+  position: relative;
+}
+.mixerSlider input::-webkit-slider-runnable-track {
+  background-color: rgb(35,35,35);
+  padding: 8px 0;
+}
+.mixerSlider input::-webkit-slider-thumb {
+  background-color: rgb(80, 80, 80);
+  border-radius: 0;
+  padding: 32px 8px;
+  /* margin: auto; */
+  /* margin-top: -30px; */
+  /* transform: translate(-55px); */
+}
+
+svg.audioVisualiser {
+  height: 300px;
+  width: 100%;
+  background-color: black;
 }
