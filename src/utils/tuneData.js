@@ -27,13 +27,14 @@ export function saveTune(name, data, id) {
         id: id ?? generateRandomCode(24),
     }
 
-    let existing = localStorage.getItem("savedTunes");
+    let existing = localStorage.getItem("savedTunes") ?? "{}";
     try {
         existing = JSON.parse(existing);
     } catch {
         existing = {};
     }
 
+    console.log(existing);
     existing[obj.id] = obj;
     localStorage.setItem("savedTunes", JSON.stringify(existing));
 }

@@ -1,11 +1,27 @@
 import { useState } from "react";
 import MixerSlider from "../components/input/MixerSlider";
 import SelectList from "../components/input/SelectList";
+import { getAllTunes, saveTune } from "../utils/tuneData";
 
 const Mixer = () => {
-    const tuneOptions = [
-        { name: "My Tune", value: "dwquzdqw", onSelect: () => { console.log("My Tune!") } }
-    ];
+    // Get tunes & format to fit into the SelectList.
+    const tuneOptions = getAllTunes().map(t => {
+        return {
+            name: t.name,
+            value: t.id
+        }
+    });
+
+    // Add an additional option - clicking this will open a prompt to import a song.
+    tuneOptions.push({
+        name: "+ Import Song",
+        value: "import",
+        onSelect: (ev) => {
+            console.log("import song");
+        },
+        // This prevents the 'onChange' listener from being fired, so that this selected value (import song) is not stored.
+        preventDefault: true
+    });
 
     const [selectedTune, setTune] = useState(localStorage.getItem("Mixer.selectedTune") ?? "");
 
