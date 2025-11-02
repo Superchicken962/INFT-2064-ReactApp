@@ -1,13 +1,36 @@
+import { useState } from "react";
 import MixerSlider from "../components/input/MixerSlider";
+import SelectList from "../components/input/SelectList";
 
 const Mixer = () => {
+    const tuneOptions = [
+        { name: "My Tune", value: "dwquzdqw" }
+    ];
+
+    const [selectedTune, setTune] = useState(localStorage.getItem("Mixer.selectedTune") ?? "");
+
+    const selectTune = (ev) => {
+        setTune(ev.target.value);
+        localStorage.setItem("Mixer.selectedTune", ev.target.value);
+    }
 
     return (
         <>
-            <h2>Mixer</h2>
-
             <main>
                 <div className="container-fluid">
+
+                    <div className="row mb-3">
+                        <div className="col-md-4">
+                            <SelectList
+                                id="selectSong"
+                                label="Select a Tune"
+                                defaultOption="Choose a tune..."
+                                options={ tuneOptions }
+                                onChange={ selectTune }
+                                value={ selectedTune }
+                            />
+                        </div>
+                    </div>
 
                     <div className="row mb-3">
                         <div className="col-md-8">

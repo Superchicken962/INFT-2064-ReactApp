@@ -6,7 +6,8 @@ import { generateRandomCode } from "./common";
 export function getAllTunes() {
     try {
         const tunes = localStorage.getItem("savedTunes");
-        return JSON.parse(tunes);
+        const data = JSON.parse(tunes);
+        return Object.values(data);
     } catch {
         return [];
     }
@@ -16,22 +17,23 @@ export function getAllTunes() {
  * Save a tune to localStorage.
  * 
  * @param { String } name - Name of tune. 
- * @param { String } data - Music data. 
+ * @param { String } data - Music data.
+ * @param { String? } id - If updating data, provide an id of the tune to override. 
  */
-export function saveTune(name, data) {
+export function saveTune(name, data, id) {
     const obj = {
         name,
         data,
-        id: generateRandomCode(24),
+        id: id ?? generateRandomCode(24),
     }
 
     let existing = localStorage.getItem("savedTunes");
     try {
         existing = JSON.parse(existing);
     } catch {
-        existing = [];
+        existing = {};
     }
 
-    existing.push(obj);
+    existing[obj.id] = obj;
     localStorage.setItem("savedTunes", JSON.stringify(existing));
 }
