@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { StrudelMirror } from '@strudel/codemirror';
 import { evalScope } from '@strudel/core';
 import { drawPianoroll } from '@strudel/draw';
@@ -16,6 +16,7 @@ import PreprocessText from "../components/PreprocessText";
 import ListGroup from "../components/display/ListGroup";
 import { getAllTunes, saveTune } from "../utils/tuneData";
 import ListGroupItem from "../components/display/ListGroupItem";
+import { removeClassFromAll } from "../utils/elements";
 
 const handleD3Data = (event) => {
     console.log(event.detail);
@@ -72,16 +73,30 @@ const Editor = () => {
 
     }, []);
 
-    const savedTunes = getAllTunes();
+    const [savedTunes, setSavedTunes] = useState(getAllTunes());
+    const [selectedTune, setSelection] = useState(localStorage.getItem("Editor.selectedTune") ?? "");
 
     // TODO: Load tune into editor when clicked.
     const selectTune = (ev) => {
         const tuneId = ev.target.id;
+
+        // TODO: Load tune data into editor & perhaps save data from previous tune beforehand.
+
+        // Remove active class from currently selected one, then apply to this element.
+        removeClassFromAll(".list-group-item.active", "active");
+        ev.target.classList.add("active");
+
+        setSelection(tuneId);
+        localStorage.setItem("Editor.selectedTune", tuneId);
+    }
+
+    const newTune = (ev) => {
+        saveTune(`My Tune #${savedTunes.length}`, "");
+        setSavedTunes(getAllTunes());
     }
 
     return (
         <>
-            {/* <h2>Strudel Editor</h2> */}
             <main>
 
                 <div className="container-fluid">
@@ -89,9 +104,14 @@ const Editor = () => {
                         <div className="col-md-4 mt-5">
                             <ListGroup maxHeight="50vh">
                                 { savedTunes.map(t => 
-                                    <ListGroupItem id={ t.id } key={ t.id } onClick={ selectTune }>{t.name}</ListGroupItem>
+                                    <ListGroupItem 
+                                        id={ t.id }
+                                        key={ t.id }
+                                        onClick={ selectTune }
+                                        active={ selectedTune === t.id }
+                                    >{t.name}</ListGroupItem>
                                 )}
-                                <ListGroupItem>+ Import Tune</ListGroupItem>
+                                <ListGroupItem onClick={ newTune }>+ New Tune</ListGroupItem>
                             </ListGroup>
                         </div>
 
