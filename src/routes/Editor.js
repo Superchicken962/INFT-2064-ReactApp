@@ -13,6 +13,9 @@ import EffectControls from '../components/EffectControls';
 import PatternOutput from '../components/PatternOutput';
 import { getGlobalEditor, Proc, setGlobalEditor } from "../utils/audio";
 import PreprocessText from "../components/PreprocessText";
+import ListGroup from "../components/display/ListGroup";
+import { getAllTunes, saveTune } from "../utils/tuneData";
+import ListGroupItem from "../components/display/ListGroupItem";
 
 const handleD3Data = (event) => {
     console.log(event.detail);
@@ -69,6 +72,13 @@ const Editor = () => {
 
     }, []);
 
+    const savedTunes = getAllTunes();
+
+    // TODO: Load tune into editor when clicked.
+    const selectTune = (ev) => {
+        const tuneId = ev.target.id;
+    }
+
     return (
         <>
             {/* <h2>Strudel Editor</h2> */}
@@ -76,7 +86,16 @@ const Editor = () => {
 
                 <div className="container-fluid">
                     <div className="row mb-3">
-                        <div className="col-md-12">
+                        <div className="col-md-4 mt-5">
+                            <ListGroup maxHeight="50vh">
+                                { savedTunes.map(t => 
+                                    <ListGroupItem id={ t.id } key={ t.id } onClick={ selectTune }>{t.name}</ListGroupItem>
+                                )}
+                                <ListGroupItem>+ Import Tune</ListGroupItem>
+                            </ListGroup>
+                        </div>
+
+                        <div className="col-md-8">
                             <ul className="nav nav-tabs mb-2" id="myTab" role="tablist">
                                 <li className="nav-item" role="presentation">
                                     <button className="nav-link active" id="preprocess-text-input-lbl" data-bs-toggle="tab" data-bs-target="#preprocess-text-input" type="button" role="tab" aria-controls="preprocess-text-input" aria-selected="true">Edit</button>
