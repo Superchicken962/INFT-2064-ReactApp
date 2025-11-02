@@ -15,7 +15,10 @@ code {
 .mixersContainer {
   display: block;
   background-color: rgb(48, 48, 48);
+  /* background-color: rgba(15, 15, 15, 0.6); */
+  width: fit-content;
   height: 150px;
+  border-radius: 10px;
 }
 /* Remember that since the mixer is rotated, the height becomes the width and width becomes height. */
 .mixerSlider {

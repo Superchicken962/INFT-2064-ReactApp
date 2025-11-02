@@ -5,7 +5,7 @@ export default function StrudelDemo() {
     
     return (
         <div>
-            <nav className="navbar navbar-expand lg navbar-light bg-light mb-3">
+            <nav className="navbar navbar-expand lg navbar-dark bg-secondary bg-gradient mb-3">
                 <div className="container-fluid">
                     <Link className="navbar-brand" to="/">MusicMixer</Link>
 
@@ -16,7 +16,7 @@ export default function StrudelDemo() {
                     <div className="collapse navbar-collapse" id="navbarCollapse">
                         <div className="navbar-nav">
                             {/* Use NavLink so that the active page link is given the 'active' className. */}
-                            <NavLink className="nav-link" to="/">Home</NavLink>
+                            <NavLink className="nav-link" to="/">Mixer</NavLink>
                             <NavLink className="nav-link" to="/editor">Editor</NavLink>
                         </div>
                     </div>

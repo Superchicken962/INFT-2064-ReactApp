@@ -4,7 +4,7 @@ import SelectList from "../components/input/SelectList";
 
 const Mixer = () => {
     const tuneOptions = [
-        { name: "My Tune", value: "dwquzdqw" }
+        { name: "My Tune", value: "dwquzdqw", onSelect: () => { console.log("My Tune!") } }
     ];
 
     const [selectedTune, setTune] = useState(localStorage.getItem("Mixer.selectedTune") ?? "");

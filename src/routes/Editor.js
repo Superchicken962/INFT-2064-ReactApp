@@ -10,8 +10,9 @@ import { stranger_tune } from '../tunes';
 import console_monkey_patch, { getD3Data } from '../console-monkey-patch';
 import AudioControls from '../components/AudioControls';
 import EffectControls from '../components/EffectControls';
-import PatternEditor from '../components/PatternEditor';
+import PatternOutput from '../components/PatternOutput';
 import { getGlobalEditor, Proc, setGlobalEditor } from "../utils/audio";
+import PreprocessText from "../components/PreprocessText";
 
 const handleD3Data = (event) => {
     console.log(event.detail);
@@ -70,7 +71,7 @@ const Editor = () => {
 
     return (
         <>
-            <h2>Strudel Editor</h2>
+            {/* <h2>Strudel Editor</h2> */}
             <main>
 
                 <div className="container-fluid">
@@ -86,11 +87,10 @@ const Editor = () => {
                             </ul>
                             <div className="tab-content" id="myTabContent">
                                 <div className="tab-pane fade show active" id="preprocess-text-input" role="tabpanel" aria-labelledby="preprocess-text-input-lbl" tabIndex="0">
-                                    <label htmlFor="exampleFormControlTextarea1" className="form-label">Text to preprocess:</label>
-                                    <textarea className="form-control" rows="15" id="proc" ></textarea>
+                                    <PreprocessText />
                                 </div>
                                 <div className="tab-pane fade" id="preprocess-text-output" role="tabpanel" aria-labelledby="preprocess-text-output-lbl" tabIndex="0">
-                                    <PatternEditor label="Preprocessed output" />
+                                    <PatternOutput />
                                 </div>
                             </div>
                         </div>
