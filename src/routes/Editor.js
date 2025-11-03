@@ -73,6 +73,8 @@ const Editor = () => {
 
     }, []);
 
+    console.log(getGlobalEditor());
+
     const [savedTunes, setSavedTunes] = useState(getAllTunes());
     const [selectedTune, setSelection] = useState(localStorage.getItem("Editor.selectedTune") ?? "");
 
@@ -123,7 +125,12 @@ const Editor = () => {
                                 <li className="nav-item" role="presentation">
                                     <button className="nav-link" id="preprocess-text-output-lbl" data-bs-toggle="tab" data-bs-target="#preprocess-text-output" type="button" role="tab" aria-controls="preprocess-text-output" aria-selected="false">Output</button>
                                 </li>
+
+                                {/* <li className="nav-item ms-auto" role="presentation">
+                                    <button className="nav-link" id="preprocess-text-output-lbl" type="button">Import</button>
+                                </li> */}
                             </ul>
+
                             <div className="tab-content" id="myTabContent">
                                 <div className="tab-pane fade show active" id="preprocess-text-input" role="tabpanel" aria-labelledby="preprocess-text-input-lbl" tabIndex="0">
                                     <PreprocessText />

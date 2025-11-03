@@ -6,7 +6,7 @@ const AudioControls = ({ volumeKey }) => {
 
     const changeVolume = (e) => {
         setVolume(e.target.value);
-        setAudioVolume(0.2);
+        setAudioVolume(e.target.value/100);
     }
 
     return (

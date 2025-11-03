@@ -59,11 +59,19 @@ export function setAudioVolume(volume) {
     const procText = document.querySelector("#proc");
     const text = procText.value;
 
-    const comment = "// Volume set programmatically";
+    const comment = "// Master volume, controlled dynamically";
 
     if (!text.includes(comment)) {
-        procText.value += `\n.gain(${volume}) ${comment}`;
+        procText.value += `\nall(x => x.gain(${volume})) ${comment}`;
+    } else {
+        const before = text.split(comment);
+        const all = before[0].split("\n");
+        // Concat line with existing value + comment, then use string replace to add new value.
+        const line = `${all[all.length-1]?.trim()} ${comment}`;
+
+        procText.value = text.replace(line, `all(x => x.gain(${volume})) ${comment}`);
     }
 
-    Proc();
+    // Process & play to update volume live.
+    procPlayAudio();
 }
