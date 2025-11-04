@@ -73,8 +73,6 @@ const Editor = () => {
 
     }, []);
 
-    console.log(getGlobalEditor());
-
     const [savedTunes, setSavedTunes] = useState(getAllTunes());
     const [selectedTune, setSelection] = useState(localStorage.getItem("Editor.selectedTune") ?? "");
 

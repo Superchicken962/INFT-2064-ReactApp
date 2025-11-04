@@ -62,6 +62,7 @@ const Mixer = () => {
                     <div className="row mb-3">
                         <div className="col-md-12">
                             <div className="mixersContainer">
+                                <MixerSlider saveKey="masterVolume">Master</MixerSlider>
                                 <MixerSlider saveKey={"one"}>Mixer 1</MixerSlider>
                                 <MixerSlider saveKey={"two"}>Mixer 2</MixerSlider>
                                 <MixerSlider saveKey={"three"}>Mixer 3</MixerSlider>

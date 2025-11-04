@@ -7,6 +7,7 @@ let globalEditor = null;
 
 export function setGlobalEditor(gEditor) {
     globalEditor = gEditor;
+    globalEditor.audioPlaying = false;
 }
 /**
  * @returns { StrudelMirror }
@@ -17,10 +18,12 @@ export function getGlobalEditor() {
 
 export function playAudio() {
     globalEditor.evaluate();
+    globalEditor.audioPlaying = true;
 }
 
 export function stopAudio() {
     globalEditor.stop();
+    globalEditor.audioPlaying = false;
 }
 
 export function processAudio() {
@@ -30,7 +33,7 @@ export function processAudio() {
 export function procPlayAudio() {
     if (globalEditor != null) {
         Proc();
-        globalEditor.evaluate();
+        playAudio()
     }
 }
 
@@ -52,8 +55,15 @@ export function Proc() {
     globalEditor.setCode(proc_text_replaced);
 }
 
+/**
+ * Use timeout before setting audio so that when constantly changing (e.g. when sliding) it doesn't continuosly process the text.
+ */
+let audioChangeTimeout;
+
 export function setAudioVolume(volume) {
     if (!globalEditor) return;
+
+    clearTimeout(audioChangeTimeout);
 
     // const code = globalEditor.code;
     const procText = document.querySelector("#proc");
@@ -72,6 +82,13 @@ export function setAudioVolume(volume) {
         procText.value = text.replace(line, `all(x => x.gain(${volume})) ${comment}`);
     }
 
-    // Process & play to update volume live.
-    procPlayAudio();
+    console.log(globalEditor);
+
+    audioChangeTimeout = setTimeout(() => {
+        // Process & play to update volume live.
+        Proc();
+        
+        // Only play audio again if it was already playing before.
+        if (globalEditor.audioPlaying) playAudio();
+    }, 200);
 }
