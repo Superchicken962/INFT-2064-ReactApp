@@ -60,7 +60,7 @@ export function Proc() {
  */
 let audioChangeTimeout;
 
-export function setAudioVolume(volume) {
+export function setMasterVolume(volume) {
     if (!globalEditor) return;
 
     clearTimeout(audioChangeTimeout);
@@ -81,8 +81,6 @@ export function setAudioVolume(volume) {
 
         procText.value = text.replace(line, `all(x => x.gain(${volume})) ${comment}`);
     }
-
-    console.log(globalEditor);
 
     audioChangeTimeout = setTimeout(() => {
         // Process & play to update volume live.

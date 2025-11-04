@@ -57,3 +57,9 @@ svg.audioVisualiser {
   width: 100%;
   background-color: black;
 }
+
+.volumeContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

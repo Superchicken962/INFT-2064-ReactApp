@@ -8,7 +8,6 @@ import { getAudioContext, webaudioOutput, registerSynthSounds } from '@strudel/w
 import { registerSoundfonts } from '@strudel/soundfonts';
 import { stranger_tune } from '../tunes';
 import console_monkey_patch, { getD3Data } from '../console-monkey-patch';
-import AudioControls from '../components/AudioControls';
 import EffectControls from '../components/EffectControls';
 import PatternOutput from '../components/PatternOutput';
 import { getGlobalEditor, Proc, setGlobalEditor } from "../utils/audio";
@@ -17,6 +16,7 @@ import ListGroup from "../components/display/ListGroup";
 import { getAllTunes, saveTune } from "../utils/tuneData";
 import ListGroupItem from "../components/display/ListGroupItem";
 import { removeClassFromAll } from "../utils/elements";
+import EditorAudioControls from "../components/EditorAudioControls";
 
 const handleD3Data = (event) => {
     console.log(event.detail);
@@ -101,7 +101,7 @@ const Editor = () => {
 
                 <div className="container-fluid">
                     <div className="row mb-3">
-                        <div className="col-md-4 mt-5">
+                        <div className="col-md-2 mt-5">
                             <ListGroup maxHeight="50vh">
                                 { savedTunes.map(t => 
                                     <ListGroupItem 
@@ -138,12 +138,21 @@ const Editor = () => {
                                 </div>
                             </div>
                         </div>
+
+                        <div className="col-md-2">
+                            <div className="mt-5">
+                                {/* TODO: buttons to help in editor - for example, where selected change to a tag. */}
+                                <EditorAudioControls />
+
+                                <hr />
+
+                                <button className="btn btn-outline-success d-block w-100 mb-2" type="button">Import</button>
+                                <button className="btn btn-outline-warning d-block w-100 mb-2" type="button">Export</button>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="row">
-                        <div className="col-md-6">
-                            <AudioControls />
-                        </div>
                         <div className="col-md-6">
                             <EffectControls strudel={ getGlobalEditor() } />
                         </div>
