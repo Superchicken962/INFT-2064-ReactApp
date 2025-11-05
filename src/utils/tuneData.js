@@ -2,6 +2,8 @@ import { generateRandomCode } from "./common";
 
 /**
  * Get all tunes.
+ * 
+ * @returns { Tune[] }
  */
 export function getAllTunes() {
     try {

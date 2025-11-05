@@ -1,3 +1,5 @@
+import { getAllTunes, saveTune } from "./tuneData";
+
 class TuneEditor {
     #strudel;
     /** @type { Tune } */
@@ -10,10 +12,33 @@ class TuneEditor {
     /**
      * Load a tune into the editor.
      * 
-     * @param { Tune } tuneData - Tune data string. 
+     * @param { Tune | String } tune - Tune data object OR name of tune. 
      */
-    loadTune(tuneData) {
-        this.#tune = tuneData;
+    loadTune(tune) {
+        let tuneObj = tune;
+        
+        // If given tune is a string (tune name), then find tune in localStorage with same name.
+        if (typeof tune === "string") {
+            const all = getAllTunes();
+            tuneObj = all.find(t => t.name === tune);
+        }
+
+        if (!tuneObj) {
+            throw new Error("Tune not provided, or tune with given name not found!");
+        }
+
+        this.#tune = tuneObj;
+    }
+
+    /**
+     * Save the current tune in editor to storage.
+     */
+    saveTune() {
+        if (!this.#tune) {
+            throw new Error("No tune has been loaded!");
+        }
+
+        saveTune(this.#tune.name, this.#tune.data, this.#tune.id);
     }
 
     /**
