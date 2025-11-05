@@ -17,6 +17,8 @@ import { getAllTunes, saveTune } from "../utils/tuneData";
 import ListGroupItem from "../components/display/ListGroupItem";
 import { removeClassFromAll } from "../utils/elements";
 import EditorAudioControls from "../components/EditorAudioControls";
+import EditorSaveControls from "../components/EditorSaveControls";
+import TuneEditor from "../utils/TuneEditor";
 
 const handleD3Data = (event) => {
     console.log(event.detail);
@@ -24,6 +26,8 @@ const handleD3Data = (event) => {
 
 const Editor = () => {
     const hasRun = useRef(false);
+    const tuneEditor = useRef(new TuneEditor(getGlobalEditor()));
+    const preprocessText = useRef(null);
 
     useEffect(() => {
 
@@ -71,8 +75,12 @@ const Editor = () => {
     // TODO: Load tune into editor when clicked.
     const selectTune = (ev) => {
         const tuneId = ev.target.id;
+        tuneEditor.current.loadTune(tuneId);
 
-        // TODO: Load tune data into editor & perhaps save data from previous tune beforehand.
+        // TODO: If changes made without saving, prompt before leaving!
+        if (preprocessText.current) {
+            preprocessText.current.value = tuneEditor.current.getData();
+        }
 
         // Remove active class from currently selected one, then apply to this element.
         removeClassFromAll(".list-group-item.active", "active");
@@ -123,7 +131,7 @@ const Editor = () => {
 
                             <div className="tab-content" id="myTabContent">
                                 <div className="tab-pane fade show active" id="preprocess-text-input" role="tabpanel" aria-labelledby="preprocess-text-input-lbl" tabIndex="0">
-                                    <PreprocessText />
+                                    <PreprocessText ref={ preprocessText } />
                                 </div>
                                 <div className="tab-pane fade" id="preprocess-text-output" role="tabpanel" aria-labelledby="preprocess-text-output-lbl" tabIndex="0">
                                     <PatternOutput />
@@ -138,8 +146,7 @@ const Editor = () => {
 
                                 <hr />
 
-                                <button className="btn btn-outline-success d-block w-100 mb-2" type="button">Import</button>
-                                <button className="btn btn-outline-warning d-block w-100 mb-2" type="button">Export</button>
+                                <EditorSaveControls />
                             </div>
                         </div>
                     </div>

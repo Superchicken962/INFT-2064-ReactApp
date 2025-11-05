@@ -1,6 +1,6 @@
 import { getAllTunes, saveTune } from "./tuneData";
 
-class TuneEditor {
+export default class TuneEditor {
     #strudel;
     /** @type { Tune } */
     #tune;
@@ -12,7 +12,7 @@ class TuneEditor {
     /**
      * Load a tune into the editor.
      * 
-     * @param { Tune | String } tune - Tune data object OR name of tune. 
+     * @param { Tune | String } tune - Tune data object, name of tune or tune id. 
      */
     loadTune(tune) {
         let tuneObj = tune;
@@ -20,13 +20,14 @@ class TuneEditor {
         // If given tune is a string (tune name), then find tune in localStorage with same name.
         if (typeof tune === "string") {
             const all = getAllTunes();
-            tuneObj = all.find(t => t.name === tune);
+            tuneObj = all.find(t => t.name === tune || t.id === tune);
         }
 
         if (!tuneObj) {
             throw new Error("Tune not provided, or tune with given name not found!");
         }
 
+        this.#setData(tuneObj.data);
         this.#tune = tuneObj;
     }
 
@@ -66,7 +67,7 @@ class TuneEditor {
         const comment = "// Master volume, controlled dynamically";
 
         if (!text.includes(comment)) {
-            this.#setData(this.getData() + `\nall(x => x.gain(${volume})) ${comment}`);
+            this.#setData(this.getData() + `\nall(x => x.gain(${vol})) ${comment}`);
         } else {
             const before = text.split(comment);
             const all = before[0].split("\n");

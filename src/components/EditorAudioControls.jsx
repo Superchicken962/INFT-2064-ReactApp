@@ -15,9 +15,9 @@ const EditorAudioControls = ({ volumeKey }) => {
         <>
             <button className="btn btn-outline-primary d-block w-100 mb-2" type="button" onClick={processAudio}>Preprocess</button>
 
-            <div className="d-block">
-                <button className="btn btn-outline-success d-inline-block mb-2" style={{width: "48%"}} type="button" onClick={playAudio}>Play</button>
-                <button className="btn btn-outline-danger d-inline-block mb-2 ms-2" style={{width: "48%"}} type="button" onClick={stopAudio}>Stop</button>  
+            <div className="d-block text-center">
+                <button className="btn btn-outline-success d-inline-block mb-2" style={{width: "46%"}} type="button" onClick={playAudio}>Play</button>
+                <button className="btn btn-outline-danger d-inline-block mb-2 ms-2" style={{width: "46%"}} type="button" onClick={stopAudio}>Stop</button>  
             </div>
 
             <div className="volumeContainer">

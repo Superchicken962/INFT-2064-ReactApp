@@ -1,4 +1,5 @@
 import { StrudelMirror } from "@strudel/codemirror";
+import TuneEditor from "./TuneEditor";
 
 /**
  * @type { StrudelMirror }
