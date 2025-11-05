@@ -29,6 +29,9 @@ const Editor = () => {
     const tuneEditor = useRef(new TuneEditor(getGlobalEditor()));
     const preprocessText = useRef(null);
 
+    const [savedTunes, setSavedTunes] = useState(getAllTunes());
+    const [selectedTune, setSelection] = useState(localStorage.getItem("Editor.selectedTune") ?? "");    
+
     useEffect(() => {
 
         if (!hasRun.current) {
@@ -63,14 +66,20 @@ const Editor = () => {
                     },
                 }));
 
-            document.getElementById('proc').value = stranger_tune
+
+            // Load the selected tune into the editor.
+            tuneEditor.current.loadTune(selectedTune);
+            loadTuneDataIntoInput();
             Proc();
         }
 
     }, []);
 
-    const [savedTunes, setSavedTunes] = useState(getAllTunes());
-    const [selectedTune, setSelection] = useState(localStorage.getItem("Editor.selectedTune") ?? "");
+    const loadTuneDataIntoInput = () => {
+        if (preprocessText.current) {
+            preprocessText.current.value = tuneEditor.current.getData();
+        } 
+    }
 
     // TODO: Load tune into editor when clicked.
     const selectTune = (ev) => {
@@ -78,9 +87,7 @@ const Editor = () => {
         tuneEditor.current.loadTune(tuneId);
 
         // TODO: If changes made without saving, prompt before leaving!
-        if (preprocessText.current) {
-            preprocessText.current.value = tuneEditor.current.getData();
-        }
+        loadTuneDataIntoInput();
 
         // Remove active class from currently selected one, then apply to this element.
         removeClassFromAll(".list-group-item.active", "active");
@@ -146,7 +153,7 @@ const Editor = () => {
 
                                 <hr />
 
-                                <EditorSaveControls />
+                                <EditorSaveControls tuneEditor={ tuneEditor.current } reloadFunc={ () => { setSavedTunes(getAllTunes()) } } />
                             </div>
                         </div>
                     </div>
