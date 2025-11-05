@@ -39,12 +39,6 @@ const Editor = () => {
                 const drawContext = canvas.getContext('2d');
                 const drawTime = [-2, 2]; // time window of drawn haps
 
-                // const audioCtx = getAudioContext();
-
-                // Create new node for managing global volume/gain and add to editor object.
-                // const volNode = new GainNode(audioCtx, { gain: 0.2 });
-                // volNode.connect(audioCtx.destination);
-
                 setGlobalEditor(new StrudelMirror({
                     defaultOutput: webaudioOutput,
                     getTime: () => getAudioContext().currentTime,
@@ -65,8 +59,6 @@ const Editor = () => {
                     },
                 }));
 
-                // getGlobalEditor().volume = volNode;
-                
             document.getElementById('proc').value = stranger_tune
             Proc();
         }
