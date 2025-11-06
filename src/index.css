@@ -11,3 +11,55 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.mixersContainer {
+  display: block;
+  background-color: rgb(48, 48, 48);
+  /* background-color: rgba(15, 15, 15, 0.6); */
+  width: fit-content;
+  height: 150px;
+  border-radius: 10px;
+}
+/* Remember that since the mixer is rotated, the height becomes the width and width becomes height. */
+.mixerSlider {
+  display: inline-block;
+  transform: rotate(90deg) translate(50px, 0);
+  position: relative;
+}
+.mixerSlider input::-webkit-slider-runnable-track {
+  background-color: rgb(35,35,35);
+  padding: 8px 0;
+}
+.mixerSlider input::-webkit-slider-thumb {
+  background-color: rgb(80, 80, 80);
+  border-radius: 0;
+  padding: 32px 8px;
+  position: relative;
+  bottom: 26px;
+}
+/* Positioning is a bit fucky because of the input rotation */
+/* 'right' is essentially 'bottom' */
+.mixerSlider label {
+  display: block;
+  margin: auto;
+  position: absolute;
+  width: fit-content;
+  transform: rotate(270deg);
+  right: -40px;
+  bottom: 0;
+  top: 0;
+  color: white;
+  pointer-events: none;
+}
+
+svg.audioVisualiser {
+  height: 300px;
+  width: 100%;
+  background-color: black;
+}
+
+.volumeContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
