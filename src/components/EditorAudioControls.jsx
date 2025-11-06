@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { playAudio, processAudio, procPlayAudio, setMasterVolume, stopAudio } from "../utils/audio";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeDown, faVolumeUp } from "@fortawesome/free-solid-svg-icons";
 
-const EditorAudioControls = ({ volumeKey }) => {
+const EditorAudioControls = ({ volumeKey, tuneEditor }) => {
     const [volume, setVolume] = useState(50);
 
     const changeVolume = (e) => {
@@ -11,9 +11,19 @@ const EditorAudioControls = ({ volumeKey }) => {
         setMasterVolume(e.target.value/100);
     }
 
+    const processTxt = useRef(null);
+
+    const process = () => {
+        processTxt.current.textContent = `Processed: ${tuneEditor.getSelectedTune().name}`;
+        processAudio();
+    }
+
     return (
         <>
-            <button className="btn btn-outline-primary d-block w-100 mb-2" type="button" onClick={processAudio}>Preprocess</button>
+            <div>
+                <small className="d-inline-block ms-2 text-muted" ref={ processTxt }>Unprocessed</small>
+                <button className="btn btn-outline-primary d-inline-block w-100 mb-2" type="button" onClick={ process }>Preprocess</button>
+            </div>
 
             <div className="d-block text-center">
                 <button className="btn btn-outline-success d-inline-block mb-2" style={{width: "46%"}} type="button" onClick={playAudio}>Play</button>

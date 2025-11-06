@@ -171,7 +171,7 @@ const Editor = () => {
                         <div className="col-md-2">
                             <div className="mt-5">
                                 {/* TODO: buttons to help in editor - for example, where selected change to a tag. */}
-                                <EditorAudioControls />
+                                <EditorAudioControls tuneEditor={ tuneEditor.current } />
 
                                 <hr />
 
