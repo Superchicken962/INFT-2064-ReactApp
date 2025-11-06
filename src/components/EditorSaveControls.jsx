@@ -15,8 +15,16 @@ const EditorSaveControls = ({ tuneEditor, reloadFunc }) => {
         // TODO: Handle errors!
     }
 
+    const save = () => {
+        tuneEditor.saveTune();
+    }
+
     return (
         <>
+            <button className="btn btn-outline-success d-block w-100 mb-2" type="button" onClick={ save }>Save</button>
+
+            <hr />
+
             <button className="btn btn-outline-success d-block w-100 mb-2" type="button" onClick={ importFile }>Import</button>
             <button className="btn btn-outline-warning d-block w-100 mb-2" type="button">Export</button>
         </>

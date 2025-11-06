@@ -5,6 +5,8 @@ export default class TuneEditor {
     /** @type { Tune } */
     #tune;
 
+    #unsavedChanges = false;
+
     constructor(globalEditor) {
         this.#strudel = globalEditor;
     }
@@ -27,8 +29,9 @@ export default class TuneEditor {
             throw new Error("Tune not provided, or tune with given name not found!");
         }
 
-        this.#setData(tuneObj.data);
+        this.setData(tuneObj.data);
         this.#tune = tuneObj;
+        this.#unsavedChanges = false;
     }
 
     /**
@@ -40,6 +43,7 @@ export default class TuneEditor {
         }
 
         saveTune(this.#tune.name, this.#tune.data, this.#tune.id);
+        this.#unsavedChanges = false;
     }
 
     /**
@@ -51,7 +55,7 @@ export default class TuneEditor {
         return this.#tune?.data ?? "";
     }
 
-    #setData(val) {
+    setData(val) {
         if (!this.#tune) return;
         this.#tune.data = val;
     }
@@ -67,14 +71,14 @@ export default class TuneEditor {
         const comment = "// Master volume, controlled dynamically";
 
         if (!text.includes(comment)) {
-            this.#setData(this.getData() + `\nall(x => x.gain(${vol})) ${comment}`);
+            this.setData(this.getData() + `\nall(x => x.gain(${vol})) ${comment}`);
         } else {
             const before = text.split(comment);
             const all = before[0].split("\n");
             // Concat line with existing value + comment, then use string replace to add new value.
             const line = `${all[all.length-1]?.trim()} ${comment}`;
 
-            this.#setData(text.replace(line, `all(x => x.gain(${vol})) ${comment}`));
+            this.setData(text.replace(line, `all(x => x.gain(${vol})) ${comment}`));
         }
 
     }
@@ -86,5 +90,21 @@ export default class TuneEditor {
      */
     setSpeed(speed) {
         // TODO
+    }
+
+    /**
+     * Set unsaved change to true.
+     */
+    addUnsavedChange() {
+        this.#unsavedChanges = true;
+    }
+
+    /**
+     * Does the tune have unsaved changes?
+     * 
+     * @returns { Boolean }
+     */
+    hasUnsavedChanges() {
+        return this.#unsavedChanges;
     }
 }

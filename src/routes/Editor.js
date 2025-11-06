@@ -69,6 +69,13 @@ const Editor = () => {
 
             // Load the selected tune into the editor.
             tuneEditor.current.loadTune(selectedTune);
+            
+            // When text is edited, mark tune as having unsaved changes.
+            preprocessText.current?.addEventListener("input", (ev) => {
+                tuneEditor.current.setData(ev.target.value);
+                tuneEditor.current.addUnsavedChange();
+            });
+
             loadTuneDataIntoInput();
             Proc();
         }
@@ -83,10 +90,15 @@ const Editor = () => {
 
     // TODO: Load tune into editor when clicked.
     const selectTune = (ev) => {
+        // If changes made without saving, prompt before changing!
+        if (tuneEditor.current.hasUnsavedChanges()) {
+            const choice = window.confirm("This tune has unsaved changes, are you sure you would like to load another?");
+            if (!choice) return;
+        }
+        
         const tuneId = ev.target.id;
         tuneEditor.current.loadTune(tuneId);
 
-        // TODO: If changes made without saving, prompt before leaving!
         loadTuneDataIntoInput();
 
         // Remove active class from currently selected one, then apply to this element.
