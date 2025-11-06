@@ -119,4 +119,14 @@ export default class TuneEditor {
 
         return deleteTune(this.#tune.id);
     }
+
+    /**
+     * Get the currently selected tune.
+     * 
+     * @returns { Tune }
+     */
+    getSelectedTune() {
+        // Return a copy.
+        return JSON.parse(JSON.stringify(this.#tune));
+    }
 }

@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { getFileInput } from "../utils/common";
+import { downloadFile, getFileInput } from "../utils/common";
 import Tune from "../utils/Tune";
 import { deleteTune, saveTune } from "../utils/tuneData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileExport, faFileImport, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
+import TuneEditor from "../utils/TuneEditor";
 
 const EditorSaveControls = ({ tuneEditor, reloadFunc }) => {
     const importFile = () => {
@@ -17,6 +18,10 @@ const EditorSaveControls = ({ tuneEditor, reloadFunc }) => {
         // TODO: Handle errors!
     }
 
+    const exportFile = () => {
+        const tune = tuneEditor.getSelectedTune();
+        downloadFile(`${tune.name}.json`, JSON.stringify(tune));
+    }
 
     const save = () => {
         tuneEditor.saveTune();
@@ -35,7 +40,7 @@ const EditorSaveControls = ({ tuneEditor, reloadFunc }) => {
             <button className="btn btn-outline-success d-block w-100 mb-2" type="button" onClick={ importFile }>
                 <FontAwesomeIcon icon={ faFileImport } /> Import
             </button>
-            <button className="btn btn-outline-warning d-block w-100 mb-2" type="button">
+            <button className="btn btn-outline-warning d-block w-100 mb-2" type="button" onClick={ exportFile }>
                 <FontAwesomeIcon icon={ faFileExport } /> Export
             </button>
 
