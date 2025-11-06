@@ -66,25 +66,35 @@ const Editor = () => {
                     },
                 }));
 
-
             // Load the selected tune into the editor.
-            tuneEditor.current.loadTune(selectedTune);
-            
+            loadLastTune();
+                
             // When text is edited, mark tune as having unsaved changes.
             preprocessText.current?.addEventListener("input", (ev) => {
                 tuneEditor.current.setData(ev.target.value);
                 tuneEditor.current.addUnsavedChange();
             });
 
-            loadTuneDataIntoInput();
             Proc();
         }
 
     }, []);
 
+    const loadLastTune = () => {
+        try {
+            tuneEditor.current.loadTune(selectedTune);
+            loadTuneDataIntoInput();
+        } catch {
+            // If tune is not found, then show message to select a new one.
+            preprocessText.current.value = "Please select a tune";
+            preprocessText.current.disabled = true;
+        }
+    }
+
     const loadTuneDataIntoInput = () => {
         if (preprocessText.current) {
             preprocessText.current.value = tuneEditor.current.getData();
+            preprocessText.current.disabled = false;
         } 
     }
 
@@ -165,7 +175,7 @@ const Editor = () => {
 
                                 <hr />
 
-                                <EditorSaveControls tuneEditor={ tuneEditor.current } reloadFunc={ () => { setSavedTunes(getAllTunes()) } } />
+                                <EditorSaveControls tuneEditor={ tuneEditor.current } reloadFunc={ () => { setSavedTunes(getAllTunes()); loadLastTune(); } } />
                             </div>
                         </div>
                     </div>

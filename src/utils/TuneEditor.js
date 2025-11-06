@@ -1,4 +1,5 @@
-import { getAllTunes, saveTune } from "./tuneData";
+import Tune from "./Tune";
+import { deleteTune, getAllTunes, saveTune } from "./tuneData";
 
 export default class TuneEditor {
     #strudel;
@@ -106,5 +107,16 @@ export default class TuneEditor {
      */
     hasUnsavedChanges() {
         return this.#unsavedChanges;
+    }
+
+    /**
+     * Deletes the currently selected tune.
+     */
+    deleteTune() {
+        if (!this.#tune) {
+            throw new Error("No tune has been loaded!");
+        }
+
+        return deleteTune(this.#tune.id);
     }
 }

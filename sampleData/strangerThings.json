@@ -1,0 +1,5 @@
+{
+    "name": "Stranger Things",
+    "id": "qmdwqnd1omo1is12n2",
+    "data": "setcps(0.7);\n\np1: n(\"0 2 4 6 7 6 4 2\")\n  .scale(\"<c3:major>/2\")\n  .s(\"supersaw\")\n  .distort(0.7)\n  .superimpose((x) => x.detune(\"<0.5>\"))\n  .lpenv(perlin.slow(3).range(1, 4))\n  .lpf(perlin.slow(2).range(100, 2000))\n  .gain(0.3);\np2: \"<a1 e2>/8\".clip(0.8).struct(\"x*8\").s(\"supersaw\").note();"
+}

@@ -40,3 +40,24 @@ export function saveTune(name, data, id) {
     existing[obj.id] = obj;
     localStorage.setItem("savedTunes", JSON.stringify(existing));
 }
+
+/**
+ * Deletes a tune from localStorage.
+ * 
+ * @param { String } id - Tune id
+ * @returns { Boolean } Was it deleted?
+ */
+export function deleteTune(id) {
+    try {
+        const tunes = JSON.parse(localStorage.getItem("savedTunes") ?? "{}");
+        delete tunes[id];
+
+        // Resave tunes after deleting.
+        localStorage.setItem("savedTunes", JSON.stringify(tunes));
+
+        return true;
+    } catch (e) {
+        console.warn("Error deleting tune:", e);
+        return false;
+    }
+}
