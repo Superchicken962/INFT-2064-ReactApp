@@ -41,7 +41,7 @@ export function procPlayAudio() {
 export function ProcessText(match, ...args) {
 
     let replace = ""
-    if (document.getElementById('flexRadioDefault2').checked) {
+    if (document.getElementById('flexRadioDefault2')?.checked) {
         replace = "_"
     }
 
