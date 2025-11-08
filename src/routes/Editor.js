@@ -152,6 +152,9 @@ const Editor = () => {
                                 <li className="nav-item" role="presentation">
                                     <button className="nav-link" id="preprocess-text-output-lbl" data-bs-toggle="tab" data-bs-target="#preprocess-text-output" type="button" role="tab" aria-controls="preprocess-text-output" aria-selected="false">Output</button>
                                 </li>
+                                <li className="nav-item" role="presentation">
+                                    <button className="nav-link" id="canvas-roll-lbl" data-bs-toggle="tab" data-bs-target="#canvas-roll-tab" type="button" role="tab" aria-controls="canvas-roll-tab" aria-selected="false">Visualiser</button>
+                                </li>
 
                                 {/* <li className="nav-item ms-auto" role="presentation">
                                     <button className="nav-link" id="preprocess-text-output-lbl" type="button">Import</button>
@@ -165,13 +168,16 @@ const Editor = () => {
                                 <div className="tab-pane fade" id="preprocess-text-output" role="tabpanel" aria-labelledby="preprocess-text-output-lbl" tabIndex="0">
                                     <PatternOutput />
                                 </div>
+                                <div className="tab-pane fade" id="canvas-roll-tab" role="tabpanel" arial-labelledby="canvas-roll-lbl" tabIndex="0">
+                                    <canvas id="roll"></canvas>
+                                </div>
                             </div>
                         </div>
 
                         <div className="col-md-2">
                             <div className="mt-5">
                                 {/* TODO: buttons to help in editor - for example, where selected change to a tag. */}
-                                <EditorAudioControls tuneEditor={ tuneEditor.current } />
+                                <EditorAudioControls tuneEditor={ tuneEditor.current } preprocessTextRef={ preprocessText } />
 
                                 <hr />
 
@@ -181,12 +187,15 @@ const Editor = () => {
                     </div>
 
                     <div className="row">
-                        <div className="col-md-6">
+                        <div className="col-md-2">
                             <EffectControls strudel={ getGlobalEditor() } />
                         </div>
+
+                        {/* <div className="col-md-8">
+                            <canvas id="roll"></canvas>
+                        </div> */}
                     </div>
                 </div>
-                <canvas id="roll"></canvas>
             </main >
         </>
     );

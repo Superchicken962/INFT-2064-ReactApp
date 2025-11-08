@@ -3,19 +3,19 @@ import { playAudio, processAudio, procPlayAudio, setMasterVolume, stopAudio } fr
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeDown, faVolumeUp } from "@fortawesome/free-solid-svg-icons";
 
-const EditorAudioControls = ({ volumeKey, tuneEditor }) => {
+const EditorAudioControls = ({ volumeKey, tuneEditor, preprocessTextRef }) => {
     const [volume, setVolume] = useState(50);
 
     const changeVolume = (e) => {
         setVolume(e.target.value);
-        setMasterVolume(e.target.value/100);
+        setMasterVolume(e.target.value/100, preprocessTextRef.current);
     }
 
     const processTxt = useRef(null);
 
     const process = () => {
         processTxt.current.textContent = `Processed: ${tuneEditor.getSelectedTune().name}`;
-        processAudio();
+        processAudio(preprocessTextRef.current);
     }
 
     return (

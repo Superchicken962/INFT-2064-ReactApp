@@ -63,3 +63,12 @@ svg.audioVisualiser {
     align-items: center;
     gap: 10px;
 }
+
+canvas#roll {
+    display: block;
+    margin: auto;
+    /* background: linear-gradient(180deg, rgb(15, 15, 15), rgb(35, 35, 35), rgb(15, 15, 15)); */
+    background: linear-gradient(180deg, rgb(5, 0, 30), rgb(15, 0, 60), rgb(5, 0, 30));
+    height: 50vh;
+    width: 100%;
+}

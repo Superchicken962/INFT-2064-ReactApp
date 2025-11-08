@@ -27,14 +27,14 @@ export function stopAudio() {
     globalEditor.audioPlaying = false;
 }
 
-export function processAudio() {
-    Proc();
+export function processAudio(procInput) {
+    Proc(procInput);
 }
 
-export function procPlayAudio() {
+export function procPlayAudio(procInput) {
     if (globalEditor != null) {
-        Proc();
-        playAudio()
+        Proc(procInput);
+        playAudio();
     }
 }
 
@@ -48,12 +48,15 @@ export function ProcessText(match, ...args) {
     return replace
 }
 
-export function Proc() {
+export function Proc(procInput) {
+    if (!procInput) return;
+
     // TODO: Make this dyanmic - showing inputs based on the <> in the text.
-    let proc_text = document.getElementById('proc').value
-    let proc_text_replaced = proc_text.replaceAll('<p1_Radio>', ProcessText);
-    ProcessText(proc_text);
-    globalEditor.setCode(proc_text_replaced);
+    const procText = procInput?.value;
+    const processedText = procText.replaceAll('<p1_Radio>', ProcessText);
+
+    ProcessText(processedText);
+    globalEditor.setCode(processedText);
 }
 
 /**
@@ -61,31 +64,30 @@ export function Proc() {
  */
 let audioChangeTimeout;
 
-export function setMasterVolume(volume) {
+export function setMasterVolume(volume, procInput) {
     if (!globalEditor) return;
 
     clearTimeout(audioChangeTimeout);
 
     // const code = globalEditor.code;
-    const procText = document.querySelector("#proc");
-    const text = procText.value;
+    const text = procInput.value;
 
     const comment = "// Master volume, controlled dynamically";
 
     if (!text.includes(comment)) {
-        procText.value += `\nall(x => x.gain(${volume})) ${comment}`;
+        procInput.value += `\nall(x => x.gain(${volume})) ${comment}`;
     } else {
         const before = text.split(comment);
         const all = before[0].split("\n");
         // Concat line with existing value + comment, then use string replace to add new value.
         const line = `${all[all.length-1]?.trim()} ${comment}`;
 
-        procText.value = text.replace(line, `all(x => x.gain(${volume})) ${comment}`);
+        procInput.value = text.replace(line, `all(x => x.gain(${volume})) ${comment}`);
     }
 
     audioChangeTimeout = setTimeout(() => {
         // Process & play to update volume live.
-        Proc();
+        Proc(procInput);
         
         // Only play audio again if it was already playing before.
         if (globalEditor.audioPlaying) playAudio();
