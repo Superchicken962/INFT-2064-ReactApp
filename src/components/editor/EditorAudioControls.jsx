@@ -1,8 +1,8 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeDown, faVolumeUp } from "@fortawesome/free-solid-svg-icons";
-import { strudelContext } from "./Strudel";
-import { AlertContext } from "./alert/AlertContext";
+import { strudelContext } from "../Strudel";
+import { AlertContext } from "../alert/AlertContext";
 
 const EditorAudioControls = ({ volumeKey, tuneEditor, preprocessTextRef }) => {
     const strudel = useContext(strudelContext);

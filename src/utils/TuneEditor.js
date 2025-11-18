@@ -33,7 +33,14 @@ export default class TuneEditor {
         this.setData(tuneObj.data);
         this.#tune = tuneObj;
         this.#unsavedChanges = false;
+
+        if (typeof this.onTuneLoaded === "function") this.onTuneLoaded(tuneObj);
     }
+
+    /**
+     * onload listener for when a tune is loaded. 
+     */
+    onTuneLoaded = null;
 
     /**
      * Save the current tune in editor to storage.
@@ -81,7 +88,19 @@ export default class TuneEditor {
 
             this.setData(text.replace(line, `all(x => x.gain(${vol})) ${comment}`));
         }
+    }
 
+    /** 
+     * Enable logging.
+    */
+    enableLogging() {
+        let text = this.getData();
+
+        if (!text.includes("all(x => x.log())")) {
+            text += "all(x => x.log())";
+        }
+
+        this.setData(text);
     }
 
     /**

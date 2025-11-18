@@ -1,16 +1,16 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import PatternOutput from '../components/PatternOutput';
-import PreprocessText from "../components/PreprocessText";
+import PatternOutput from '../components/editor/PatternOutput';
+import PreprocessText from "../components/editor/PreprocessText";
 import ListGroup from "../components/display/ListGroup";
 import { getAllTunes, saveTune } from "../utils/tuneData";
 import ListGroupItem from "../components/display/ListGroupItem";
 import { removeClassFromAll } from "../utils/elements";
-import EditorAudioControls from "../components/EditorAudioControls";
-import EditorSaveControls from "../components/EditorSaveControls";
+import EditorAudioControls from "../components/editor/EditorAudioControls";
+import EditorSaveControls from "../components/editor/EditorSaveControls";
 import TuneEditor from "../utils/TuneEditor";
 import { strudelContext } from "../components/Strudel";
 import { AlertContext } from "../components/alert/AlertContext";
-import EditorEffectControls from "../components/EditorEffectControls";
+import EditorEffectControls from "../components/editor/EditorEffectControls";
 
 const Editor = () => {
     const hasRun = useRef(false);

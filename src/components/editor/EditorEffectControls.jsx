@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { extractVariablesFromText } from "../utils/processing";
+import { extractVariablesFromText } from "../../utils/processing";
 
 const EditorEffectControls = ({ tuneEditor, preprocessTextRef }) => {
     const [vars, setVars] = useState([]);

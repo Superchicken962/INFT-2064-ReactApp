@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { downloadFile, getFileInput } from "../utils/common";
-import Tune from "../utils/Tune";
-import { deleteTune, saveTune } from "../utils/tuneData";
+import { downloadFile, getFileInput } from "../../utils/common";
+import Tune from "../../utils/Tune";
+import { deleteTune, saveTune } from "../../utils/tuneData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileExport, faFileImport, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
 
