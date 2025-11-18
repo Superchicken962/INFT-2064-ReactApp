@@ -67,8 +67,6 @@ const Mixer = () => {
                                 <MixerSlider saveKey={"two"}>Mixer 2</MixerSlider>
                                 <MixerSlider saveKey={"three"}>Mixer 3</MixerSlider>
                                 <MixerSlider saveKey={"four"}>Mixer 4</MixerSlider>
-                                <MixerSlider saveKey={"five"}>Mixer 5</MixerSlider>
-                                <MixerSlider saveKey={"six"}>Mixer 6</MixerSlider>
                             </div>
                         </div>
                     </div>
