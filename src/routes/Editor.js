@@ -22,10 +22,15 @@ const Editor = () => {
         // Load last saved tune upon editor load.
         loadLastTune();
 
+        // Set canvas & output for strudel.
+        strudel.useCanvas(canvas.current);
+        strudel.useOutput(outputElement.current);
+
     }, [strudel.getEditor()]);
 
     const preprocessText = useRef(null);
     const canvas = useRef(null);
+    const outputElement = useRef(null);
     
     const [savedTunes, setSavedTunes] = useState(getAllTunes());
     const [selectedTune, setSelection] = useState(localStorage.getItem("Editor.selectedTune") ?? "");
@@ -116,10 +121,10 @@ const Editor = () => {
                                     <PreprocessText ref={ preprocessText } />
                                 </div>
                                 <div className="tab-pane fade" id="preprocess-text-output" role="tabpanel" aria-labelledby="preprocess-text-output-lbl" tabIndex="0">
-                                    <PatternOutput />
+                                    <PatternOutput outputRef={ outputElement } />
                                 </div>
                                 <div className="tab-pane fade" id="canvas-roll-tab" role="tabpanel" arial-labelledby="canvas-roll-lbl" tabIndex="0">
-                                    <canvas id="roll"></canvas>
+                                    <canvas id="roll" ref={ canvas }></canvas>
                                 </div>
                             </div>
                         </div>

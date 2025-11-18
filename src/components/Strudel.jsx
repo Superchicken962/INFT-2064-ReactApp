@@ -19,7 +19,7 @@ const Strudel = ({ children }) => {
     const editorRef = useRef(null);
 
     // Set the canvas of strudel.
-    const useCanvas = useCallback(({ canvas }) => {
+    const useCanvas = useCallback((canvas) => {
         if (!editorRef.current) return;
         if (!canvas) return;
 
@@ -28,16 +28,19 @@ const Strudel = ({ children }) => {
         const drawContext = canvas.getContext('2d');
         const drawTime = [-2, 2]; // time window of drawn haps
 
-        editorRef.current.setDrawHandler((haps, time) => drawPianoroll({
+        editorRef.current.onDraw = (haps, time) => drawPianoroll({
             haps, time, ctx: drawContext, drawTime, fold: 0
-        }));
+        });
+
+        return true;
     });
 
     // Set the output / root of strudel.
-    const useOutput = useCallback(({ output }) => {
+    const useOutput = useCallback((outputEl) => {
         if (!editorRef.current) return;
 
-        editorRef.current.setRoot(output);
+        console.log(editorRef.current);
+        editorRef.current.root = outputEl;
     });
 
     useEffect(() => {

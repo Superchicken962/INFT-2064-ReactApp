@@ -28,7 +28,7 @@ export default function StrudelDemo() {
             </nav>
             
             <AlertContext.Provider value={{ alertRef }}>
-                <div className="col-md-8">
+                <div className="d-flex justify-content-center">
                     <AlertManager ref={ alertRef }></AlertManager>
                 </div>
                 

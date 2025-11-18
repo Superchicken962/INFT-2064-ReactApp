@@ -36,9 +36,9 @@ const EditorAudioControls = ({ volumeKey, tuneEditor, preprocessTextRef }) => {
     const playAudio = async() => {
         try {
             await strudel.play();
-        } catch {
+        } catch(e) {
             console.log(alertRef);
-            alertRef.current?.show("err");
+            alertRef.current?.show(e.toString() ?? "Error playing audio");
         }
     }
 
