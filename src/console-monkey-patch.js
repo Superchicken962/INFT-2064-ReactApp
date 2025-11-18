@@ -11,6 +11,15 @@ export default function console_monkey_patch() {
 
     //Overwrite console.log function
     console.log = function (...args) {
+        // If log includes "eval error", create a custom error event and dispatch it.
+        if (args[0].includes("[eval] error:")) {
+            // Get error message from log.
+            const msg = args[0].split("[eval] error:")[1]?.trim();
+
+            const errEv = new CustomEvent("StrudelEvalError", { detail: msg });
+            document.dispatchEvent(errEv);
+        }
+
         //Join args with space, default behaviour. Check for [hap], that's a strudel prefix
         if (args.join(" ").substring(0, 8) === "%c[hap] ")
         {

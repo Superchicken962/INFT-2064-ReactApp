@@ -1,4 +1,4 @@
-import { createContext, useCallback, useEffect, useRef } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef } from "react";
 import console_monkey_patch from "../console-monkey-patch";
 import { StrudelMirror } from "@strudel/codemirror";
 import { Proc, setGlobalEditor } from "../utils/audio";
@@ -68,7 +68,7 @@ const Strudel = ({ children }) => {
                         import('@strudel/webaudio'),
                     );
                     await Promise.all([loadModules, registerSynthSounds(), registerSoundfonts()]);
-                },
+                }
             });
 
             editorRef.current = strudelMirror;

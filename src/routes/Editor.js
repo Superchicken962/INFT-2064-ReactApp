@@ -11,11 +11,13 @@ import EditorAudioControls from "../components/EditorAudioControls";
 import EditorSaveControls from "../components/EditorSaveControls";
 import TuneEditor from "../utils/TuneEditor";
 import { strudelContext } from "../components/Strudel";
+import { AlertContext } from "../components/alert/AlertContext";
 
 const Editor = () => {
     const hasRun = useRef(false);
     const strudel = useContext(strudelContext);
     const tuneEditor = useRef(new TuneEditor(strudel.getEditor()));
+    const { alertRef } = useContext(AlertContext);
 
     // Use effect to track when strudel context loads.
     useEffect(() => {
@@ -78,6 +80,11 @@ const Editor = () => {
         saveTune(`My Tune #${savedTunes.length}`, "");
         setSavedTunes(getAllTunes());
     }
+
+    // Handle strudel evaluation errors.
+    document.addEventListener("StrudelEvalError", (ev) => {
+        alertRef.current?.show(`Error evaluating: ${ev.detail}`);
+    });
 
     return (
         <>
