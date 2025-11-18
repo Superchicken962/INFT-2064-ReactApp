@@ -1,12 +1,19 @@
 import { useContext, useRef, useState } from "react";
-import { playAudio, processAudio, procPlayAudio, setMasterVolume, stopAudio } from "../utils/audio";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeDown, faVolumeUp } from "@fortawesome/free-solid-svg-icons";
 import { strudelContext } from "./Strudel";
+import { AlertContext } from "./alert/AlertContext";
 
 const EditorAudioControls = ({ volumeKey, tuneEditor, preprocessTextRef }) => {
     const strudel = useContext(strudelContext);
     const [volume, setVolume] = useState(50);
+    const { alertRef } = useContext(AlertContext);
+
+    // When text is edited, mark tune as having unsaved changes.
+    preprocessTextRef.current?.addEventListener("input", (ev) => {
+        tuneEditor.setData(ev.target.value);
+        tuneEditor.addUnsavedChange();
+    });
 
     const changeVolume = (e) => {
         setVolume(e.target.value);
@@ -22,7 +29,6 @@ const EditorAudioControls = ({ volumeKey, tuneEditor, preprocessTextRef }) => {
     const processTxt = useRef(null);
 
     const process = () => {
-        console.log(preprocessTextRef.current.value);
         strudel.process(preprocessTextRef.current.value);
         processTxt.current.textContent = `Processed: ${tuneEditor.getSelectedTune().name}`;
     }
@@ -31,7 +37,8 @@ const EditorAudioControls = ({ volumeKey, tuneEditor, preprocessTextRef }) => {
         try {
             await strudel.play();
         } catch {
-            // TODO: Show error message.
+            console.log(alertRef);
+            alertRef.current?.show("err");
         }
     }
 

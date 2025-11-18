@@ -69,15 +69,6 @@ const Strudel = ({ children }) => {
             });
 
             editorRef.current = strudelMirror;
-
-            // Load the selected tune into the editor.
-            // loadLastTune();
-                
-            // // When text is edited, mark tune as having unsaved changes.
-            // preprocessText.current?.addEventListener("input", (ev) => {
-            //     tuneEditor.current.setData(ev.target.value);
-            //     tuneEditor.current.addUnsavedChange();
-            // });
         }
 
     }, []);
