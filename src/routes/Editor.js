@@ -1,16 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { StrudelMirror } from '@strudel/codemirror';
-import { evalScope } from '@strudel/core';
-import { drawPianoroll } from '@strudel/draw';
-import { initAudioOnFirstClick } from '@strudel/webaudio';
-import { transpiler } from '@strudel/transpiler';
-import { getAudioContext, webaudioOutput, registerSynthSounds } from '@strudel/webaudio';
-import { registerSoundfonts } from '@strudel/soundfonts';
-import { stranger_tune } from '../tunes';
-import console_monkey_patch, { getD3Data } from '../console-monkey-patch';
-import EffectControls from '../components/EffectControls';
+import { useContext, useEffect, useRef, useState } from "react";
 import PatternOutput from '../components/PatternOutput';
-import { getGlobalEditor, Proc, setGlobalEditor } from "../utils/audio";
 import PreprocessText from "../components/PreprocessText";
 import ListGroup from "../components/display/ListGroup";
 import { getAllTunes, saveTune } from "../utils/tuneData";
@@ -19,72 +8,49 @@ import { removeClassFromAll } from "../utils/elements";
 import EditorAudioControls from "../components/EditorAudioControls";
 import EditorSaveControls from "../components/EditorSaveControls";
 import TuneEditor from "../utils/TuneEditor";
-
-const handleD3Data = (event) => {
-    console.log(event.detail);
-};
+import { strudelContext } from "../components/Strudel";
+import { AlertContext } from "../components/alert/AlertContext";
+import EditorEffectControls from "../components/EditorEffectControls";
 
 const Editor = () => {
     const hasRun = useRef(false);
-    const tuneEditor = useRef(new TuneEditor(getGlobalEditor()));
-    const preprocessText = useRef(null);
+    const strudel = useContext(strudelContext);
+    const tuneEditor = useRef(new TuneEditor(strudel.getEditor()));
+    const { alertRef } = useContext(AlertContext);
 
-    const [savedTunes, setSavedTunes] = useState(getAllTunes());
-    const [selectedTune, setSelection] = useState(localStorage.getItem("Editor.selectedTune") ?? "");    
-
+    // Use effect to track when strudel context loads.
     useEffect(() => {
+        // Load last saved tune upon editor load.
+        loadLastTune();
 
-        if (!hasRun.current) {
-            document.addEventListener("d3Data", handleD3Data);
-            console_monkey_patch();
-            hasRun.current = true;
-            //Code copied from example: https://codeberg.org/uzu/strudel/src/branch/main/examples/codemirror-repl
-                //init canvas
-                const canvas = document.getElementById('roll');
-                canvas.width = canvas.width * 2;
-                canvas.height = canvas.height * 2;
-                const drawContext = canvas.getContext('2d');
-                const drawTime = [-2, 2]; // time window of drawn haps
+        // Set canvas & output for strudel.
+        strudel.useCanvas(canvas.current);
+        strudel.useOutput(outputElement.current);
 
-                setGlobalEditor(new StrudelMirror({
-                    defaultOutput: webaudioOutput,
-                    getTime: () => getAudioContext().currentTime,
-                    transpiler,
-                    root: document.getElementById('editor'),
-                    drawTime,
-                    onDraw: (haps, time) => drawPianoroll({ haps, time, ctx: drawContext, drawTime, fold: 0 }),
-                    prebake: async () => {
-                        initAudioOnFirstClick(); // needed to make the browser happy (don't await this here..)
-                        const loadModules = evalScope(
-                            import('@strudel/core'),
-                            import('@strudel/draw'),
-                            import('@strudel/mini'),
-                            import('@strudel/tonal'),
-                            import('@strudel/webaudio'),
-                        );
-                        await Promise.all([loadModules, registerSynthSounds(), registerSoundfonts()]);
-                    },
-                }));
+    }, [strudel.getEditor()]);
 
+    const preprocessText = useRef(null);
+    const canvas = useRef(null);
+    const outputElement = useRef(null);
+    
+    const [savedTunes, setSavedTunes] = useState(getAllTunes());
+    const [selectedTune, setSelection] = useState(localStorage.getItem("Editor.selectedTune") ?? "");
 
-            // Load the selected tune into the editor.
+    const loadLastTune = () => {
+        try {
             tuneEditor.current.loadTune(selectedTune);
-            
-            // When text is edited, mark tune as having unsaved changes.
-            preprocessText.current?.addEventListener("input", (ev) => {
-                tuneEditor.current.setData(ev.target.value);
-                tuneEditor.current.addUnsavedChange();
-            });
-
             loadTuneDataIntoInput();
-            Proc();
+        } catch {
+            // If tune is not found, then show message to select a new one.
+            preprocessText.current.value = "Please select a tune";
+            preprocessText.current.disabled = true;
         }
-
-    }, []);
+    }
 
     const loadTuneDataIntoInput = () => {
         if (preprocessText.current) {
             preprocessText.current.value = tuneEditor.current.getData();
+            preprocessText.current.disabled = false;
         } 
     }
 
@@ -114,6 +80,11 @@ const Editor = () => {
         setSavedTunes(getAllTunes());
     }
 
+    // Handle strudel evaluation errors.
+    document.addEventListener("StrudelEvalError", (ev) => {
+        alertRef.current?.show(`Error evaluating: ${ev.detail}`);
+    });
+
     return (
         <>
             <main>
@@ -142,10 +113,9 @@ const Editor = () => {
                                 <li className="nav-item" role="presentation">
                                     <button className="nav-link" id="preprocess-text-output-lbl" data-bs-toggle="tab" data-bs-target="#preprocess-text-output" type="button" role="tab" aria-controls="preprocess-text-output" aria-selected="false">Output</button>
                                 </li>
-
-                                {/* <li className="nav-item ms-auto" role="presentation">
-                                    <button className="nav-link" id="preprocess-text-output-lbl" type="button">Import</button>
-                                </li> */}
+                                <li className="nav-item" role="presentation">
+                                    <button className="nav-link" id="canvas-roll-lbl" data-bs-toggle="tab" data-bs-target="#canvas-roll-tab" type="button" role="tab" aria-controls="canvas-roll-tab" aria-selected="false">Visualiser</button>
+                                </li>
                             </ul>
 
                             <div className="tab-content" id="myTabContent">
@@ -153,7 +123,10 @@ const Editor = () => {
                                     <PreprocessText ref={ preprocessText } />
                                 </div>
                                 <div className="tab-pane fade" id="preprocess-text-output" role="tabpanel" aria-labelledby="preprocess-text-output-lbl" tabIndex="0">
-                                    <PatternOutput />
+                                    <PatternOutput outputRef={ outputElement } />
+                                </div>
+                                <div className="tab-pane fade" id="canvas-roll-tab" role="tabpanel" arial-labelledby="canvas-roll-lbl" tabIndex="0">
+                                    <canvas id="roll" ref={ canvas }></canvas>
                                 </div>
                             </div>
                         </div>
@@ -161,22 +134,21 @@ const Editor = () => {
                         <div className="col-md-2">
                             <div className="mt-5">
                                 {/* TODO: buttons to help in editor - for example, where selected change to a tag. */}
-                                <EditorAudioControls />
+                                <EditorAudioControls tuneEditor={ tuneEditor.current } preprocessTextRef={ preprocessText } />
 
                                 <hr />
 
-                                <EditorSaveControls tuneEditor={ tuneEditor.current } reloadFunc={ () => { setSavedTunes(getAllTunes()) } } />
+                                <EditorSaveControls tuneEditor={ tuneEditor.current } reloadFunc={ () => { setSavedTunes(getAllTunes()); loadLastTune(); } } />
                             </div>
                         </div>
                     </div>
 
-                    <div className="row">
-                        <div className="col-md-6">
-                            <EffectControls strudel={ getGlobalEditor() } />
+                    <div className="row justify-content-center mb-3">
+                        <div className="col-md-8">
+                            <EditorEffectControls tuneEditor={ tuneEditor.current } preprocessTextRef={ preprocessText } />
                         </div>
                     </div>
                 </div>
-                <canvas id="roll"></canvas>
             </main >
         </>
     );

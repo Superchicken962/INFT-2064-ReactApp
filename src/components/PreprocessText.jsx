@@ -1,4 +1,4 @@
-const PreprocessText = ({ label, ref}) => {
+const PreprocessText = ({ label, ref }) => {
     return (
         <div className="preprocessText">
             { label ? <label htmlFor="exampleFormControlTextarea1" className="form-label">{ label }</label> : "" }

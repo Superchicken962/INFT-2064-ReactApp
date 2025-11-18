@@ -1,8 +1,12 @@
 import './App.css';
 import { Link, NavLink, Outlet } from 'react-router-dom';
+import { useRef } from 'react';
+import { AlertContext } from './components/alert/AlertContext';
+import AlertManager from './components/alert/AlertManager';
 
 export default function StrudelDemo() {
-    
+    const alertRef = useRef(null);
+
     return (
         <div>
             <nav className="navbar navbar-expand lg navbar-dark bg-secondary bg-gradient mb-3">
@@ -22,8 +26,15 @@ export default function StrudelDemo() {
                     </div>
                 </div>
             </nav>
+            
+            <AlertContext.Provider value={{ alertRef }}>
+                <div className="d-flex justify-content-center">
+                    <AlertManager ref={ alertRef }></AlertManager>
+                </div>
+                
+                <Outlet/>
+            </AlertContext.Provider>
 
-            <Outlet />
         </div>
     )
 

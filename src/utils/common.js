@@ -50,3 +50,19 @@ export function getFileInput(accepts, onUpload, onError) {
     hiddenInp.click();
     hiddenInp.remove();
 }
+
+/**
+ * Download a file with the given content and file name.
+ * 
+ * @param { String } name - File name (include extension).
+ * @param { String } content - File content.
+ */
+export function downloadFile(name, content) {
+    const anchor = document.createElement("a");
+    anchor.setAttribute("href", `data:text/plain;charset=utf-8,${encodeURIComponent(content)}`);
+    anchor.setAttribute("download", name);
+
+    anchor.click();
+
+    return anchor;
+}

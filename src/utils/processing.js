@@ -5,8 +5,15 @@
  */
 export function extractVariablesFromText(text) {
     // Regexp pattern to search for all "variables" in tune - worsd that preceed colon.
-    const reg = /(?<=:)(.*)/g;
+    const reg = /\$([a-zA-Z0-9_]+)\s*([^;]*)/g;
+    const vars = [];
 
-    const matches = [...text.matchAll(reg)];
-    console.log(matches);
+    for (const m of text.matchAll(reg)) {
+        vars.push({
+            variable: m[1],
+            content: m[2].trim()
+        });
+    }
+
+    return vars;
 }
