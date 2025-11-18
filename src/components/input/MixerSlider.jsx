@@ -12,7 +12,7 @@ const MixerSlider = ({ saveKey, onChange, children }) => {
         // Save the state to localStorage.
         localStorage.setItem(KEY_NAME, ev.target.value);
 
-        onChange?.({ ...ev, key: KEY_NAME, value: ev.target.value });
+        onChange?.({ ...ev, key: KEY_NAME, rawKey: saveKey, value: ev.target.value });
     }
 
     return (

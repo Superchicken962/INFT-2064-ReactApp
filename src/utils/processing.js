@@ -20,17 +20,26 @@ export function extractVariablesFromText(text) {
 }
 
 /**
- * Add to the end of content that is labelled by a given variable.
+ * Set the gain for an effect given the variable name.
  * 
  * @param { String } text - Text to search in.
  * @param { String } variable - Variable to search for.
- * @param { String } add - Text to add.
+ * @param { String | Number } gainAmt - Value to set gain to.
  * @returns { String } Modified text.
  */
-export function addToEndOfVariableContent(text, variable, add) {
+export function setGainForVariable(text, variable, gainAmt) {
     const vars = extractVariablesFromText(text);
     const foundVar = vars.find(v => v.variable === variable);
     if (!foundVar) return text;
 
-    console.log(foundVar);
+    let varText = foundVar.content;
+    // Remove .gain() if it is present.
+    if (varText.includes(".gain(")) {
+        varText = varText.split(".gain(")[0];
+    }
+
+    varText += `.gain(${gainAmt})`
+
+    // Replace original variable content, with new modified one.
+    return text.replace(foundVar.content, varText);
 }

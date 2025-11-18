@@ -102,7 +102,8 @@ const Strudel = ({ children }) => {
                 useOutput,
                 process,
                 play,
-                stop
+                stop,
+                isPlaying: editorRef.current?.audioPlaying
             }}>
                 { children }
             </strudelContext.Provider>

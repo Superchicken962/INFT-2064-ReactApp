@@ -4,7 +4,7 @@ import MixerAudioControls from "../components/mixer/MixerAudioControls";
 import TuneEditor from "../utils/TuneEditor";
 import { strudelContext } from "../components/Strudel";
 import { AlertContext } from "../components/alert/AlertContext";
-import { extractVariablesFromText } from "../utils/processing";
+import { extractVariablesFromText, setGainForVariable } from "../utils/processing";
 
 const Mixer = () => {
     const strudel = useContext(strudelContext);
@@ -17,8 +17,24 @@ const Mixer = () => {
         alertRef.current?.show(`Error evaluating: ${ev.detail}`);
     });
 
+    const wait = {};
+
     const sliderInput = (ev) => {
-        console.log("Slider", ev);
+        clearTimeout(wait[ev.rawKey]);
+
+        if (ev.rawKey === "masterVolume") {
+            tuneEditor.current.setMasterVolume(ev.value);
+        } else {
+            const modified = setGainForVariable(tuneEditor.current.getData(), ev.rawKey, ev.value);
+            tuneEditor.current.setData(modified);
+        }
+        
+        strudel.process(tuneEditor.current.getData());
+
+        // Essentially wait before processing and playing again in case we change value quickly.
+        wait[ev.rawKey] = setTimeout(() => {
+            strudel.play();
+        }, 10);
     }
 
     // When tune is loaded, update mixers.
