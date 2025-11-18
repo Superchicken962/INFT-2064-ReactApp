@@ -20,8 +20,7 @@ const Strudel = ({ children }) => {
 
     // Set the canvas of strudel.
     const useCanvas = useCallback((canvas) => {
-        if (!editorRef.current) return;
-        if (!canvas) return;
+        if (!editorRef.current || !canvas) return;
 
         canvas.width = canvas.width * 2;
         canvas.height = canvas.height * 2;
@@ -39,7 +38,8 @@ const Strudel = ({ children }) => {
     const useOutput = useCallback((outputEl) => {
         if (!editorRef.current) return;
 
-        console.log(editorRef.current);
+        // Essentially move the existing editor to the given element.
+        outputEl.appendChild(editorRef.current.editor.dom);
         editorRef.current.root = outputEl;
     });
 
