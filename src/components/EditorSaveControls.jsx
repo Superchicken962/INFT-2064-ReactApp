@@ -4,7 +4,6 @@ import Tune from "../utils/Tune";
 import { deleteTune, saveTune } from "../utils/tuneData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileExport, faFileImport, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
-import TuneEditor from "../utils/TuneEditor";
 
 const EditorSaveControls = ({ tuneEditor, reloadFunc }) => {
     const importFile = () => {

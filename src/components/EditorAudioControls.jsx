@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeDown, faVolumeUp } from "@fortawesome/free-solid-svg-icons";
 import { strudelContext } from "./Strudel";
@@ -9,11 +9,13 @@ const EditorAudioControls = ({ volumeKey, tuneEditor, preprocessTextRef }) => {
     const [volume, setVolume] = useState(50);
     const { alertRef } = useContext(AlertContext);
 
-    // When text is edited, mark tune as having unsaved changes.
-    preprocessTextRef.current?.addEventListener("input", (ev) => {
-        tuneEditor.setData(ev.target.value);
-        tuneEditor.addUnsavedChange();
-    });
+    useEffect(() => {
+        // When text is edited, mark tune as having unsaved changes.
+        preprocessTextRef.current?.addEventListener("input", (ev) => {
+            tuneEditor.setData(ev.target.value);
+            tuneEditor.addUnsavedChange();
+        });
+    }, [preprocessTextRef]);
 
     const changeVolume = (e) => {
         setVolume(e.target.value);

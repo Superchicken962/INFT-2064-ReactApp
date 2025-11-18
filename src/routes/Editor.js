@@ -1,7 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import EffectControls from '../components/EffectControls';
 import PatternOutput from '../components/PatternOutput';
-import { getGlobalEditor, Proc, setGlobalEditor } from "../utils/audio";
 import PreprocessText from "../components/PreprocessText";
 import ListGroup from "../components/display/ListGroup";
 import { getAllTunes, saveTune } from "../utils/tuneData";
@@ -12,6 +10,7 @@ import EditorSaveControls from "../components/EditorSaveControls";
 import TuneEditor from "../utils/TuneEditor";
 import { strudelContext } from "../components/Strudel";
 import { AlertContext } from "../components/alert/AlertContext";
+import EditorEffectControls from "../components/EditorEffectControls";
 
 const Editor = () => {
     const hasRun = useRef(false);
@@ -117,10 +116,6 @@ const Editor = () => {
                                 <li className="nav-item" role="presentation">
                                     <button className="nav-link" id="canvas-roll-lbl" data-bs-toggle="tab" data-bs-target="#canvas-roll-tab" type="button" role="tab" aria-controls="canvas-roll-tab" aria-selected="false">Visualiser</button>
                                 </li>
-
-                                {/* <li className="nav-item ms-auto" role="presentation">
-                                    <button className="nav-link" id="preprocess-text-output-lbl" type="button">Import</button>
-                                </li> */}
                             </ul>
 
                             <div className="tab-content" id="myTabContent">
@@ -148,14 +143,10 @@ const Editor = () => {
                         </div>
                     </div>
 
-                    <div className="row">
-                        <div className="col-md-2">
-                            <EffectControls strudel={ getGlobalEditor() } />
+                    <div className="row justify-content-center mb-3">
+                        <div className="col-md-8">
+                            <EditorEffectControls tuneEditor={ tuneEditor.current } preprocessTextRef={ preprocessText } />
                         </div>
-
-                        {/* <div className="col-md-8">
-                            <canvas id="roll"></canvas>
-                        </div> */}
                     </div>
                 </div>
             </main >
