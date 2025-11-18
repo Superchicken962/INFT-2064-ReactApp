@@ -1,5 +1,4 @@
 import { StrudelMirror } from "@strudel/codemirror";
-import TuneEditor from "./TuneEditor";
 
 /**
  * @type { StrudelMirror }
@@ -15,48 +14,6 @@ export function setGlobalEditor(gEditor) {
  */
 export function getGlobalEditor() {
     return globalEditor;
-}
-
-export function playAudio() {
-    globalEditor.evaluate();
-    globalEditor.audioPlaying = true;
-}
-
-export function stopAudio() {
-    globalEditor.stop();
-    globalEditor.audioPlaying = false;
-}
-
-export function processAudio(procInput) {
-    Proc(procInput);
-}
-
-export function procPlayAudio(procInput) {
-    if (globalEditor != null) {
-        Proc(procInput);
-        playAudio();
-    }
-}
-
-export function ProcessText(match, ...args) {
-
-    let replace = ""
-    if (document.getElementById('flexRadioDefault2')?.checked) {
-        replace = "_"
-    }
-
-    return replace
-}
-
-export function Proc(procInput) {
-    if (!procInput) return;
-
-    // TODO: Make this dyanmic - showing inputs based on the <> in the text.
-    const procText = procInput?.value;
-    const processedText = procText.replaceAll('<p1_Radio>', ProcessText);
-
-    ProcessText(processedText);
-    globalEditor.setCode(processedText);
 }
 
 /**

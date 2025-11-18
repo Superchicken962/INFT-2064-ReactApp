@@ -1,13 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import { StrudelMirror } from '@strudel/codemirror';
-import { evalScope } from '@strudel/core';
-import { drawPianoroll } from '@strudel/draw';
-import { initAudioOnFirstClick } from '@strudel/webaudio';
-import { transpiler } from '@strudel/transpiler';
-import { getAudioContext, webaudioOutput, registerSynthSounds } from '@strudel/webaudio';
-import { registerSoundfonts } from '@strudel/soundfonts';
-import { stranger_tune } from '../tunes';
-import console_monkey_patch, { getD3Data } from '../console-monkey-patch';
+import { useContext, useEffect, useRef, useState } from "react";
 import EffectControls from '../components/EffectControls';
 import PatternOutput from '../components/PatternOutput';
 import { getGlobalEditor, Proc, setGlobalEditor } from "../utils/audio";
@@ -19,66 +10,25 @@ import { removeClassFromAll } from "../utils/elements";
 import EditorAudioControls from "../components/EditorAudioControls";
 import EditorSaveControls from "../components/EditorSaveControls";
 import TuneEditor from "../utils/TuneEditor";
-
-const handleD3Data = (event) => {
-    console.log(event.detail);
-};
+import { strudelContext } from "../components/Strudel";
 
 const Editor = () => {
     const hasRun = useRef(false);
-    const tuneEditor = useRef(new TuneEditor(getGlobalEditor()));
-    const preprocessText = useRef(null);
+    const strudel = useContext(strudelContext);
+    const tuneEditor = useRef(new TuneEditor(strudel.getEditor()));
 
-    const [savedTunes, setSavedTunes] = useState(getAllTunes());
-    const [selectedTune, setSelection] = useState(localStorage.getItem("Editor.selectedTune") ?? "");    
-
+    // Use effect to track when strudel context loads.
     useEffect(() => {
+        // Load last saved tune upon editor load.
+        loadLastTune();
 
-        if (!hasRun.current) {
-            document.addEventListener("d3Data", handleD3Data);
-            console_monkey_patch();
-            hasRun.current = true;
-            //Code copied from example: https://codeberg.org/uzu/strudel/src/branch/main/examples/codemirror-repl
-                //init canvas
-                const canvas = document.getElementById('roll');
-                canvas.width = canvas.width * 2;
-                canvas.height = canvas.height * 2;
-                const drawContext = canvas.getContext('2d');
-                const drawTime = [-2, 2]; // time window of drawn haps
+    }, [strudel.getEditor()]);
 
-                setGlobalEditor(new StrudelMirror({
-                    defaultOutput: webaudioOutput,
-                    getTime: () => getAudioContext().currentTime,
-                    transpiler,
-                    root: document.getElementById('editor'),
-                    drawTime,
-                    onDraw: (haps, time) => drawPianoroll({ haps, time, ctx: drawContext, drawTime, fold: 0 }),
-                    prebake: async () => {
-                        initAudioOnFirstClick(); // needed to make the browser happy (don't await this here..)
-                        const loadModules = evalScope(
-                            import('@strudel/core'),
-                            import('@strudel/draw'),
-                            import('@strudel/mini'),
-                            import('@strudel/tonal'),
-                            import('@strudel/webaudio'),
-                        );
-                        await Promise.all([loadModules, registerSynthSounds(), registerSoundfonts()]);
-                    },
-                }));
-
-            // Load the selected tune into the editor.
-            loadLastTune();
-                
-            // When text is edited, mark tune as having unsaved changes.
-            preprocessText.current?.addEventListener("input", (ev) => {
-                tuneEditor.current.setData(ev.target.value);
-                tuneEditor.current.addUnsavedChange();
-            });
-
-            Proc();
-        }
-
-    }, []);
+    const preprocessText = useRef(null);
+    const canvas = useRef(null);
+    
+    const [savedTunes, setSavedTunes] = useState(getAllTunes());
+    const [selectedTune, setSelection] = useState(localStorage.getItem("Editor.selectedTune") ?? "");
 
     const loadLastTune = () => {
         try {

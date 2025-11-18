@@ -1,21 +1,38 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { playAudio, processAudio, procPlayAudio, setMasterVolume, stopAudio } from "../utils/audio";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeDown, faVolumeUp } from "@fortawesome/free-solid-svg-icons";
+import { strudelContext } from "./Strudel";
 
 const EditorAudioControls = ({ volumeKey, tuneEditor, preprocessTextRef }) => {
+    const strudel = useContext(strudelContext);
     const [volume, setVolume] = useState(50);
 
     const changeVolume = (e) => {
         setVolume(e.target.value);
-        setMasterVolume(e.target.value/100, preprocessTextRef.current);
+        
+        tuneEditor.setMasterVolume(e.target.value/100);
+        preprocessTextRef.current.value = tuneEditor.getData();
+
+        // Process + play to apply changes live.
+        process();
+        playAudio();
     }
 
     const processTxt = useRef(null);
 
     const process = () => {
+        console.log(preprocessTextRef.current.value);
+        strudel.process(preprocessTextRef.current.value);
         processTxt.current.textContent = `Processed: ${tuneEditor.getSelectedTune().name}`;
-        processAudio(preprocessTextRef.current);
+    }
+
+    const playAudio = async() => {
+        try {
+            await strudel.play();
+        } catch {
+            // TODO: Show error message.
+        }
     }
 
     return (
@@ -26,8 +43,8 @@ const EditorAudioControls = ({ volumeKey, tuneEditor, preprocessTextRef }) => {
             </div>
 
             <div className="d-block text-center">
-                <button className="btn btn-outline-success d-inline-block mb-2" style={{width: "46%"}} type="button" onClick={playAudio}>Play</button>
-                <button className="btn btn-outline-danger d-inline-block mb-2 ms-2" style={{width: "46%"}} type="button" onClick={stopAudio}>Stop</button>  
+                <button className="btn btn-outline-success d-inline-block mb-2" style={{width: "46%"}} type="button" onClick={ playAudio }>Play</button>
+                <button className="btn btn-outline-danger d-inline-block mb-2 ms-2" style={{width: "46%"}} type="button" onClick={ strudel.stop }>Stop</button>  
             </div>
 
             <div className="volumeContainer">
