@@ -5,6 +5,7 @@ import TuneEditor from "../utils/TuneEditor";
 import { strudelContext } from "../components/Strudel";
 import { AlertContext } from "../components/alert/AlertContext";
 import { extractVariablesFromText, setGainForVariable } from "../utils/processing";
+import D3Visualiser from "../components/mixer/D3Visualiser";
 
 const Mixer = () => {
     const strudel = useContext(strudelContext);
@@ -40,6 +41,7 @@ const Mixer = () => {
     // When tune is loaded, update mixers.
     tuneEditor.current.onTuneLoaded = (tune) => {
         setVariables(extractVariablesFromText(tuneEditor.current.getData()));
+        tuneEditor.current.enableLogging();
     }
 
     return (
@@ -54,9 +56,8 @@ const Mixer = () => {
                     </div>
 
                     <div className="row mb-3">
-                        <div className="col-md-8">
-                            {/* TODO: Add d3 visualiser */}
-                            <svg className="audioVisualiser"></svg>
+                        <div className="col-md-12">
+                            <D3Visualiser></D3Visualiser>
                         </div>
                     </div>
 

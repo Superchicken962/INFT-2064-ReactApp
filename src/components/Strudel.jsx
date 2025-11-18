@@ -10,10 +10,6 @@ import { evalScope } from "@strudel/core";
 
 export const strudelContext = createContext(null);
 
-const handleD3Data = (event) => {
-    console.log(event.detail);
-};
-
 const Strudel = ({ children }) => {
     const hasRun = useRef(false);
     const editorRef = useRef(null);
@@ -46,7 +42,6 @@ const Strudel = ({ children }) => {
     useEffect(() => {
 
         if (!hasRun.current) {
-            document.addEventListener("d3Data", handleD3Data);
             console_monkey_patch();
             hasRun.current = true;
 
@@ -103,7 +98,7 @@ const Strudel = ({ children }) => {
                 process,
                 play,
                 stop,
-                isPlaying: editorRef.current?.audioPlaying
+                isPlaying: editorRef.current?.audioPlaying,
             }}>
                 { children }
             </strudelContext.Provider>

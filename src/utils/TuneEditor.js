@@ -88,7 +88,19 @@ export default class TuneEditor {
 
             this.setData(text.replace(line, `all(x => x.gain(${vol})) ${comment}`));
         }
+    }
 
+    /** 
+     * Enable logging.
+    */
+    enableLogging() {
+        let text = this.getData();
+
+        if (!text.includes("all(x => x.log())")) {
+            text += "all(x => x.log())";
+        }
+
+        this.setData(text);
     }
 
     /**
