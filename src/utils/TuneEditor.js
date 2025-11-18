@@ -33,7 +33,14 @@ export default class TuneEditor {
         this.setData(tuneObj.data);
         this.#tune = tuneObj;
         this.#unsavedChanges = false;
+
+        if (typeof this.onTuneLoaded === "function") this.onTuneLoaded(tuneObj);
     }
+
+    /**
+     * onload listener for when a tune is loaded. 
+     */
+    onTuneLoaded = null;
 
     /**
      * Save the current tune in editor to storage.
