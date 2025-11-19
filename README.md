@@ -21,5 +21,4 @@ It may act a bit strange with playing music when switching between pages, so ple
 On the editor page, you may have to preprocess manually.
 
 
-~~demo: https://youtu.be/dYMUxAAdFfo~~  
-New demo: https://youtu.be/M6EhFVPik88
+Demo video: https://youtu.be/TUN3dTab0rg
